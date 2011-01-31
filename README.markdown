@@ -12,10 +12,10 @@ Project Team
 ------------
 
 ### Modelling Team
-Kun Xie ([xiekun](http://github.com/xiekun/))
-Rafal Dittwald ([rafd](https://github.com/rafd/))
-Sean Yamana ([seanamana](https://github.com/rafd/))
-Marina Freire-Gormaly
+* Kun Xie ([xiekun](http://github.com/xiekun/))
+* Rafal Dittwald ([rafd](https://github.com/rafd/))
+* Sean Yamana ([seanamana](https://github.com/rafd/))
+* Marina Freire-Gormaly
 
 ### Neighbourhood Team
 
