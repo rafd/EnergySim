@@ -3,7 +3,7 @@ getErrorString();
 simulate(BouncingBall, stopTime=3.0);
 getErrorString();
 // plotting height h and flying status
-plot({h,flying,v});
+plot({h,v});
 // plotting speed v
 //plot(v);
 // plotting all variables
