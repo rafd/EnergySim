@@ -1,0 +1,4 @@
+loadFile("../model_test.mo")
+simulate(...);
+plot({});
+system("rm -rf ...");
