@@ -1,0 +1,12 @@
+loadFile("ModelGenericDwelling.mo");
+getErrorString();
+loadFile("HouseHeatingExample.mo");
+simulate(HouseAsUsual, stopTime=12.0);
+getErrorString();
+// plotting height h and flying status
+plot(AccuHeatCost);
+// plotting speed v
+//plot({OutsideTemp,HeatCost,HumanComfortTemp});
+// plotting all variables
+// plotAll(BouncingBall);
+//system("rm -rf BouncingBall.log BouncingBall.makefile BouncingBall BouncingBall.exe BouncingBall.libs BouncingBall.cpp BouncingBall_* output.log");
