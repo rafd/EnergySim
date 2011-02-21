@@ -4,4 +4,3 @@ getErrorString();
 simulate(EnergySimTest, stopTime=12.0);
 getErrorString();
 plot({house_usual.AccuHeatCost, house_well_insulated.AccuHeatCost, house_propane_heating.AccuHeatCost});
-//system("rm -rf *.log *.makefile BouncingBall *.exe *.libs *.cpp BouncingBall_*");
