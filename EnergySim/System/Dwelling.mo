@@ -2,11 +2,13 @@
 //"Assumption: Annual temperature variation based on sinusoidal wave functions, ignore fluctuation within one month"
 //"Assumption: Heating efficiency is 40%"
 
+type Temperature = Real; // temp in kelvin, TODO: add the unit
+
 function outside_temperature
 
-  constant Real Pi = 3.14159265358;
-  input    Real time;
-  output   Real result "Outside Temperature in Kelvin";
+  constant Real         Pi = 3.14159265358;
+  input    Real         time;
+  output   Temperature  result "Outside Temperature in Kelvin";
   
   algorithm
   
@@ -16,11 +18,11 @@ end outside_temperature;
 
 function preferred_temperature
 
-  constant Real max_pref = 25 + 273;
-  constant Real min_pref = 18 + 273;
+  constant Temperature max_pref = 25 + 273;
+  constant Temperature min_pref = 18 + 273;
   
-  input    Real t_outside;
-  output   Real result;
+  input    Temperature t_outside;
+  output   Temperature result;
   
   algorithm
       if t_outside > max_pref then result := max_pref;
@@ -32,8 +34,8 @@ end preferred_temperature;
 
 function temperature_delta
   
-  input  Real time;
-  output Real result;
+  input  Real         time;
+  output Temperature  result;
   
   algorithm
     result := preferred_temperature(outside_temperature(time)) - outside_temperature(time);
