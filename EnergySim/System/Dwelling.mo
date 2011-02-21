@@ -2,7 +2,7 @@
 //"Assumption: Annual temperature variation based on sinusoidal wave functions, ignore fluctuation within one month"
 //"Assumption: Heating efficiency is 40%"
 
-type Temperature = Real; // temp in kelvin, TODO: add the unit
+type Temperature = Real(final quantity ="Temperature", final unit="K");
 
 function outside_temperature
 
