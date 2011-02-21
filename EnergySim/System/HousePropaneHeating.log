@@ -1,1 +1,0 @@
-g++ -I. -o HousePropaneHeating HousePropaneHeating.cpp HousePropaneHeating_functions.cpp    -lsim -linteractive -I"/usr//include/omc" -march=native -mfpmath=sse  -lsendData -lQtNetwork -lQtCore -lQtGui -lpthread -L"/usr//lib/omc" -lc_runtime -lf2c HousePropaneHeating_records.c

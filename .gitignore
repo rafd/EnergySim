@@ -1,1 +1,11 @@
+*
+!*.*
 *.tmproj
+*.log
+*.cpp
+*.makefile
+*.h
+*.c
+*.libs
+*.plt
+*.txt
