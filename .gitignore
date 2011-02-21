@@ -1,5 +1,3 @@
-*
-!*.*
 *.tmproj
 *.log
 *.cpp
@@ -9,3 +7,4 @@
 *.libs
 *.plt
 *.txt
+Scenarios/ModelTest/sim/EnergySimTest
