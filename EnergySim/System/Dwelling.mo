@@ -5,8 +5,8 @@
 function outside_temperature
 
   constant Real Pi = 3.14159265358;
-  input  Real time;
-  output Real result "Outside Temperature in Kelvin";
+  input    Real time;
+  output   Real result "Outside Temperature in Kelvin";
   
   algorithm
   
@@ -14,12 +14,37 @@ function outside_temperature
     
 end outside_temperature;
 
+function preferred_temperature
+
+  constant Real max_pref = 25 + 273;
+  constant Real min_pref = 18 + 273;
+  
+  input    Real t_outside;
+  output   Real result;
+  
+  algorithm
+      if t_outside > max_pref then result := max_pref;
+      elseif t_outside < min_pref then result := min_pref;
+      else result := t_outside;
+      end if;
+
+end preferred_temperature;
+
+function temperature_delta
+  
+  input  Real time;
+  output Real result;
+  
+  algorithm
+    result := preferred_temperature(outside_temperature(time)) - outside_temperature(time);
+
+end temperature_delta;
+
 model Dwelling "generic dwelling model"
   
   parameter Real BuildingSurfaceArea  = 400     "Building Surface Area in m^2";
   parameter Real PercentageWindow     = 0.1		  "Percentage of window on building surface";
   parameter Real HeightOfFloor        = 2		    "Height of Floor in m";
-  parameter Real HumanComfortTemp     = 297	    "HumanComfortTemp in Kelvin";
   parameter Real WallThickness        = 0.3		  "WallThickness in m";
   parameter Real HeatingEfficiency    = 0.4	    "Heating Effciency";
   parameter Real GasEnergy            = 37.5		"Natural Gas Energy Content when combusted MJ/m^3";
@@ -38,8 +63,8 @@ model Dwelling "generic dwelling model"
 
   equation 
  
-    HeatCapReq = 	UWall * BuildingSurfaceArea * (1 - PercentageWindow) * (HumanComfortTemp - outside_temperature(time)) + 
-  		UWindow * BuildingSurfaceArea * PercentageWindow * (HumanComfortTemp - outside_temperature(time));
+    HeatCapReq = 	UWall * BuildingSurfaceArea * (1 - PercentageWindow) * temperature_delta(time) + 
+  		UWindow * BuildingSurfaceArea * PercentageWindow * temperature_delta(time);
 				
     der(HeatCapTot) = HeatCapReq * 24*60*60*30 / 1000000;	
 					
