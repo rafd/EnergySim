@@ -1,4 +1,7 @@
-loadFile("../model_test.mo")
-simulate(...);
-plot({});
-system("rm -rf ...");
+loadFile("../../../EnergySim/System/Dwelling.mo");
+loadFile("../model_test.mo");
+getErrorString();
+simulate(HouseAsUsual, stopTime=12.0);
+getErrorString();
+plot(AccuHeatCost);
+//system("rm -rf *.log *.makefile BouncingBall *.exe *.libs *.cpp BouncingBall_*");
