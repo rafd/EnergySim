@@ -1,4 +1,4 @@
 within; 
-package EnergySim
+encapsulated package EnergySim
   "EnergySim root package"
 end EnergySim;

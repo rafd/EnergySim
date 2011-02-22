@@ -1,5 +1,5 @@
 within EnergySim.Technologies;
-package Something
+encapsulated package Something
 model House
 	parameter Real k, area, wall_thickness, volume;
 	parameter Real air_heat_capacity = 1.297;
@@ -7,6 +7,6 @@ model House
 	Real heat;
 equation
 	heat = volume * air_heat_capacity;
-	der(t_in) =  k*area/wall_thickness*(t_out-t_in);.
+	der(t_in) =  k*area/wall_thickness*(t_out-t_in);
 end House;
 end Something;

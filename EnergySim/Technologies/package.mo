@@ -1,4 +1,4 @@
 within EnergySim; 
-package Technologies
+encapsulated package Technologies
   "Technology package"
 end Technologies;

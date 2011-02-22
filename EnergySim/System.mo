@@ -1,7 +1,7 @@
 within EnergySim;
 
-package System
-  import SI = Modelica.SIUnits;
+encapsulated package System
+  //import Modelica.SIUnits.*;
   
   type Temperature = Real(final quantity ="Temperature", final unit="K");
 
