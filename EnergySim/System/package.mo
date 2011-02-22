@@ -3,16 +3,28 @@ within EnergySim;
 encapsulated package System
   import Modelica.SIunits.Temperature;
 
-  function outside_temperature
-  
-    input    Real         time;
-    output   Temperature  result "Outside Temperature in Kelvin";
 
-    algorithm
+  encapsulated package Grid
 
-      result := -28 * cos(Modelica.Constants.pi / 6 * (time - 1)) - 5 + 273;
-  
-  end outside_temperature;
+    function electricity_demand
+
+    end electricity_demand;
+
+  end Grid;
+
+
+  encapsulated package Region
+    import Modelica.SIunits.Temperature;
+    
+    function temperature_outside
+      input    Real         time;
+      output   Temperature  result "Outside Temperature in Kelvin";
+
+      algorithm
+        result := -28 * cos(Modelica.Constants.pi / 6 * (time - 1)) - 5 + 273;
+    end temperature_outside;
+
+  end Region;
 
   function temperature_delta
 
@@ -20,7 +32,7 @@ encapsulated package System
     output Temperature  result;
 
     algorithm
-      result := Occupants.preferred_temperature(outside_temperature(time)) - outside_temperature(time);
+      result := Occupants.preferred_temperature(Region.temperature_outside(time)) - Region.temperature_outside(time);
 
   end temperature_delta;
 
@@ -60,7 +72,7 @@ encapsulated package System
 
       HeatCost = der(AccuHeatCost);
 
-      OutsideTempC=outside_temperature(time)-273;
+      OutsideTempC=Region.temperature_outside(time)-273;
 
   end Dwelling;
 
