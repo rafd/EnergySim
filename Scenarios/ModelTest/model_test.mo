@@ -3,7 +3,8 @@
 */
 
 model EnergySimTest
-
+  import EnergySim.System.*;
+  
   public
     Dwelling    house_usual(UWall=0.28);
     Dwelling    house_well_insulated(UWall=0.1,UWindow=0.07);         //"A house that is well insulated with low U values"

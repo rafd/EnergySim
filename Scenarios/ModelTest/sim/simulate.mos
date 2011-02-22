@@ -1,4 +1,6 @@
-loadFile("../../../EnergySim/System/Dwelling.mo");
+loadModel(Modelica.Constants);
+loadModel(Modelica.SIUnits);
+loadModel(EnergySim);
 loadFile("../model_test.mo");
 getErrorString();
 simulate(EnergySimTest, stopTime=12.0);

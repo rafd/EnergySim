@@ -20,3 +20,18 @@ Project Team
 ### Neighbourhood Team
 
 ### Technology Team
+
+
+
+Set Up
+------
+
+Setting the appropriate OpenModelica Path:
+  * in terminal (or equivalent), run OMShell
+  * in OMShell, run: getSettings() and copy down the part after the first : (should end in /common)
+    * for example: /opt/local/lib/omlibrary/common
+  * exit OMShell
+  * cd to the directory you noted down above
+  * run: ln -s /path/to/this/repo /path/to/directory/above
+    * for example: ln -s ~/Code/EnergySim /opt/local/lib/omlibrary/common
+    * may require sudo
