@@ -1,9 +1,7 @@
 within EnergySim;
 
 encapsulated package System
-  //import Modelica.SIUnits.*;
-  
-  type Temperature = Real(final quantity ="Temperature", final unit="K");
+  import Modelica.SIunits.Temperature;
 
   function outside_temperature
   
@@ -16,29 +14,13 @@ encapsulated package System
   
   end outside_temperature;
 
-  function preferred_temperature
-
-    constant Temperature max_pref = 25 + 273;
-    constant Temperature min_pref = 18 + 273;
-
-    input    Temperature t_outside;
-    output   Temperature result;
-
-    algorithm
-        if t_outside > max_pref then result := max_pref;
-        elseif t_outside < min_pref then result := min_pref;
-        else result := t_outside;
-        end if;
-
-  end preferred_temperature;
-
   function temperature_delta
 
     input  Real         time;
     output Temperature  result;
 
     algorithm
-      result := preferred_temperature(outside_temperature(time)) - outside_temperature(time);
+      result := Occupants.preferred_temperature(outside_temperature(time)) - outside_temperature(time);
 
   end temperature_delta;
 
