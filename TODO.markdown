@@ -1,2 +1,7 @@
-* move things into packages (vs. all in Dwelling.mo)
-* conversion function for temperatures
+Misc
+----
+* conversion function for temperatures (use lib)
+
+Reporting System
+----------------
+* use: octave + gnuplot OR R + plplot to plot from compile generated *.plt file
