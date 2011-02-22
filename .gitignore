@@ -1,2 +1,10 @@
 *.tmproj
 *.komodoproject
+*.log
+*.cpp
+*.makefile
+*.h
+*.c
+*.libs
+*.plt
+*.txt

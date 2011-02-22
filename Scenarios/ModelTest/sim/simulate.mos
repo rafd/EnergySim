@@ -1,0 +1,8 @@
+loadModel(Modelica.Constants);
+loadModel(Modelica.SIUnits);
+loadModel(EnergySim);
+loadFile("../model_test.mo");
+getErrorString();
+simulate(EnergySimTest, stopTime=12.0);
+getErrorString();
+plot({house_usual.AccuHeatCost, house_well_insulated.AccuHeatCost, house_propane_heating.AccuHeatCost});
