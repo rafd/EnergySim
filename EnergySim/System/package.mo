@@ -54,10 +54,10 @@ encapsulated package System
     parameter Real GasPrice             = 0.1542	"Gas Price $/m^3";
 	
     Real SpaceReq     = (InsWallThickness * BuildingSurfaceArea) / HeightOfFloor  "Space Required for Heating";
-    Real HeatCapReq   "Instantanoues Heating Capacity Required in Joule";
+    Real HeatCapReq   "Instantaneous Heating Capacity Required in Joule";
     Real HeatCapTot   "Accumulated Heating load in MJoule since t=0";		
 
-    Real HeatCost       "Instantanous Heating Cost in $";
+    Real HeatCost       "Instantaneous Heating Cost in $";
     Real AccuHeatCost	  "Accumulated Heating Cost since t=0";
     Real OutsideTempC	  "Outside Temperature in Celcius";	
 

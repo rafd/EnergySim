@@ -13,6 +13,5 @@ model EnergySimTest
     Dwelling    house_1(UWall=0.28);  
     Dwelling    house_2(UWall=0.28);  
     Dwelling    house_3(UWall=0.28);  
-	chpPlant	plant_test;
-	chpPlant.heatPerDay = house_1.heatCapReq + house_2.heatCapReq + house_3.heatCapReq + chpPlant.heatWaste;
+
 end EnergySimTest;
