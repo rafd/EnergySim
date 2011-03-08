@@ -3,6 +3,7 @@ loadModel(Modelica.SIUnits);
 loadModel(EnergySim);
 loadFile("../model_test.mo");
 getErrorString();
-simulate(EnergySimTest, stopTime=12.0);
+simulate(EnergySimTest, stopTime=5*365.25*24*60*60); //5 years
 getErrorString();
-plot({house_usual.AccuHeatCost, house_well_insulated.AccuHeatCost, house_propane_heating.AccuHeatCost});
+plot(test_t.TemperatureAmbient);
+//plot(test_w.Dic);
