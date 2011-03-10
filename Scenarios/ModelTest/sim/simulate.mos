@@ -5,4 +5,4 @@ loadFile("../model_test.mo");
 getErrorString();
 simulate(EnergySimTest, stopTime=12.0);//, outputFormat="csv");
 getErrorString();
-plot({h_1.heat.T});
+plot({h_1.thermal_in.T});
