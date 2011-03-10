@@ -2,46 +2,8 @@
   Neighbourhood simulation to test all features of EnergySim library.
 */
 
-connector RealInput = input Real;
-
-connector HeatPort
-  Modelica.SIunits.Temp_K         T   "Temperature in [K]";
-  //flow Modelica.SIunits.HeatFlux  q   "Heat flux";
-end HeatPort;
-
-model Community
-  inner HeatPort envHeat;
-  RealInput temp = 300;
-  RealInput qu = 3;
-  
-  equation
-    temp = envHeat.T;
-    //qu = envHeat.q;
-end Community;
-
-
-partial model ThermalHouse
-  outer HeatPort envHeat;
-  HeatPort heat;
-
-  equation
-    connect(heat, envHeat);
-end ThermalHouse;
-
-
-partial model ElectricHouse
-
-end ElectricHouse;
-
-
-model House
-  extends ThermalHouse;
-  extends ElectricHouse;  
-  
-end House;
-
 model TenHouses
-  House house_vec[10];
+  EnergySim.System.House house_vec[10];
 end TenHouses;
 
 model EnergySimTest

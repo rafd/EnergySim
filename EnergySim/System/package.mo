@@ -36,6 +36,47 @@ encapsulated package System
 
   end temperature_delta;
 
+
+  connector RealInput = input Real;
+
+
+  connector HeatPort
+    Temperature T "Temperature in [K]";
+    //flow Modelica.SIunits.HeatFlux  q   "Heat flux";
+  end HeatPort;
+
+
+  model Community
+    inner HeatPort envHeat;
+    RealInput temp = 300;
+    RealInput qu = 3;
+
+    equation
+      temp = envHeat.T;
+      //qu = envHeat.q;
+  end Community;
+
+
+  partial model ThermalHouse
+    outer HeatPort envHeat;
+    HeatPort heat;
+
+    equation
+      connect(heat, envHeat);
+  end ThermalHouse;
+
+
+  partial model ElectricHouse
+
+  end ElectricHouse;
+
+
+  model House
+    extends ThermalHouse;
+    extends ElectricHouse;  
+
+  end House;
+
   //"Condition: Time = "month, i.e time=12 means 12 months"
   //"Assumption: Annual temperature variation based on sinusoidal wave functions, ignore fluctuation within one month"
   //"Assumption: Heating efficiency is 40%"
