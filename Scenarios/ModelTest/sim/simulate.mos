@@ -5,4 +5,4 @@ loadFile("../model_test.mo");
 getErrorString();
 simulate(EnergySimTest, stopTime=5*365.25*24*60*60); //5 years
 getErrorString();
-plot(test_t.TemperatureAmbient);
+plot(test_wt.CurrentValue);

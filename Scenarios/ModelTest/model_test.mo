@@ -4,6 +4,7 @@
 
 model EnergySimTest
   import EnergySim.System.*;
+  import EnergySim.Technologies.*;
   
   public
     //Dwelling    house_usual(UWall=0.28);
@@ -11,4 +12,5 @@ model EnergySimTest
     //Dwelling    house_propane_heating(GasEnergy=25.3,GasPrice=0.615); //"A house using propane instead of natural gas for heating"
     Region.temperature_ambient    test_t; 
     Region.wind_ambient           test_w;
+    Technologies.wind_turbine     test_wt;   
 end EnergySimTest;
