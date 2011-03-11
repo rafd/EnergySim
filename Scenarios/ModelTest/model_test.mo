@@ -13,7 +13,7 @@ model EnergySimTest
   extends Environment;
   
   public
-    House       h_1;
+    House       h_1, h_2;
     //House       h_2, h_3, h_4, h_5;
     //TenHouses   houses_1; 
     //Dwelling    house_usual(UWall=0.28);

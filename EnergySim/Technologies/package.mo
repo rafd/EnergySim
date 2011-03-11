@@ -3,8 +3,19 @@ encapsulated package Technologies
   "Technology package"
   import Modelica.SIunits.*;
   
+  type FixedCost = Real(final quantity="Fixed Cost", final unit="$");
+  type VariableCost = Real(final quantity="Variable Cost", final unit="$/year");
   
   // CONNECTORS (PORTS)
+  
+  connector EconomicPort
+    FixedCost fixed_cost "Fixed cost in dollars.";
+    //flow Cost variable_cost "Variable cost, in dollars/year"
+  end EconomicPort;
+  
+  connector FlexEconomicPort
+    FixedCost fixed_cost[2];
+  end FlexEconomicPort;
   
   connector ThermalPort
     Temperature T "Temperature in [K]";
@@ -30,6 +41,15 @@ encapsulated package Technologies
   partial model GenericDevice
     
   end GenericDevice;
+  
+  
+  partial model EconomicDevice
+    extends GenericDevice;
+    
+    //EconomicPort economic_in;
+    EconomicPort economic_out;
+    
+  end EconomicDevice;
   
   
   partial model ElectricDevice
@@ -75,6 +95,21 @@ encapsulated package Technologies
   
   
   // HOUSE
+  partial model EconomicHouse
+    extends EconomicDevice;
+    
+    //outer ElectricPort env_economic;
+    
+    FixedCost fixed_cost = 2000;
+    input Real cost = 0;
+    
+    equation
+      //economic_in.fixed_cost = cost;
+      economic_out.fixed_cost = fixed_cost; //economic_in.fixed_cost + fixed_cost;
+      //connect(economic_out, env_economic);
+      
+  end EconomicHouse;
+  
   
   partial model ElectricHouse
     extends ElectricDevice;
@@ -112,6 +147,7 @@ encapsulated package Technologies
     extends ElectricHouse;
     extends ThermalHouse;
     extends RadiativeHouse;
+    extends EconomicHouse;
     
   end House;
   
