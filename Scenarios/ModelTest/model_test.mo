@@ -7,15 +7,21 @@ model TenHouses
 end TenHouses;
 
 model EnergySimTest
-  import EnergySim.System.*;
   import EnergySim.Technologies.*;
   
-  extends Environment;
+  extends EnergySim.System.Environment;
+  
+  Real fixed_cost;
   
   public
-    House       h_1, h_2;
-    //House       h_2, h_3, h_4, h_5;
-    //TenHouses   houses_1; 
+    House       houses[10];
+  
+  algorithm
+    fixed_cost := 0;
+    for k in 1:9 loop
+      fixed_cost := fixed_cost + houses[1].economic_out.fixed_cost; //needs to be k, not 1
+    end for;
+
     //Dwelling    house_usual(UWall=0.28);
     //Dwelling    house_well_insulated(UWall=0.1,UWindow=0.07);         //"A house that is well insulated with low U values"
     //Dwelling    house_propane_heating(GasEnergy=25.3,GasPrice=0.615); //"A house using propane instead of natural gas for heating"

@@ -5,4 +5,4 @@ loadFile("../model_test.mo");
 getErrorString();
 simulate(EnergySimTest, stopTime=12.0);//, outputFormat="csv");
 getErrorString();
-plot({h_1.thermal_in.T, h_1.economic_out.fixed_cost});
+plot({houses[1].thermal_in.T, houses[1].economic_out.fixed_cost, fixed_cost});

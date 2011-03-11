@@ -13,10 +13,6 @@ encapsulated package Technologies
     //flow Cost variable_cost "Variable cost, in dollars/year"
   end EconomicPort;
   
-  connector FlexEconomicPort
-    FixedCost fixed_cost[2];
-  end FlexEconomicPort;
-  
   connector ThermalPort
     Temperature T "Temperature in [K]";
     //flow Modelica.SIunits.HeatFlux q "Heat flux";
@@ -98,7 +94,7 @@ encapsulated package Technologies
   partial model EconomicHouse
     extends EconomicDevice;
     
-    //outer ElectricPort env_economic;
+    //outer EconomicPort env_fixed_cost;
     
     FixedCost fixed_cost = 2000;
     input Real cost = 0;
@@ -106,7 +102,7 @@ encapsulated package Technologies
     equation
       //economic_in.fixed_cost = cost;
       economic_out.fixed_cost = fixed_cost; //economic_in.fixed_cost + fixed_cost;
-      //connect(economic_out, env_economic);
+      //connect(economic_out, env_fixed_cost);
       
   end EconomicHouse;
   

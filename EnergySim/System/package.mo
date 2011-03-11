@@ -9,23 +9,13 @@ encapsulated package System
   model Environment
     inner ThermalPort env_thermal;
     inner ElectricPort env_electric;
-    //inner FlexEconomicPort env_economic;
-    //inner FlexEconomicPort env_fixed_cost;
-    //inner RadiativePort env_radiative;
-    
+
     input Real ambient_temperature = 300;
     input Real ambient_voltage = 120;
-    //input Real fixed_cost = 0;
-    
-    //Real total_fixed_cost = 1*env_economic.fixed_cost;
-    
+        
     equation
       env_thermal.T = ambient_temperature;
       env_electric.v = ambient_voltage;
-      //env_economic.fixed_cost = fixed_cost;
-      //connect(env_economic, env_economic_end);
-      //env_radiative = ...
-    
   
   end Environment;
 
