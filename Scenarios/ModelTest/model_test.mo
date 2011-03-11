@@ -7,7 +7,9 @@ model TenHouses
 end TenHouses;
 
 model EnergySimTest
+  import EnergySim.System.*;
   import EnergySim.Technologies.*;
+  
   extends Environment;
   
   public

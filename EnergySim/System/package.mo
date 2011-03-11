@@ -4,6 +4,25 @@ encapsulated package System
   import Modelica.SIunits.Temperature;
 
 
+  // ENVIRONMENT
+  
+  model Environment
+    inner ThermalPort env_thermal;
+    inner ElectricPort env_electric;
+    //inner RadiativePort env_radiative;
+    
+    input Real ambient_temperature = 300;
+    input Real ambient_voltage = 120;
+    
+    equation
+      env_thermal.T = ambient_temperature;
+      env_electric.v = ambient_voltage;
+      //env_radiative = ...
+    
+  
+  end Environment;
+  
+
   encapsulated package Grid
 
     function electricity_demand
