@@ -27,7 +27,7 @@ encapsulated package Technologies
   
   connector ElectricPort
     Voltage v "potential at the port";
-    //flow Current I "current flowing into the port";
+    //flow Current i "current flowing into the port";
   end ElectricPort;
   
   
@@ -52,7 +52,8 @@ encapsulated package Technologies
     extends GenericDevice;
     
     Voltage v "voltage drop between electric_in and electric_out";
-    //Current i "current flow from elec_in to elec_out"
+    //Current i "current flow from elec_in to elec_out";
+    //ActivePower P "active power of device";
     
     ElectricPort electric_in;
     ElectricPort electric_out;
@@ -61,6 +62,7 @@ encapsulated package Technologies
       v	= electric_in.v - electric_out.v; 
       //0 = electric_in.i + electric_out.i; 
       //i = electric_in.i;
+      //P = v * i;
     
   end ElectricDevice;
   
@@ -110,12 +112,13 @@ encapsulated package Technologies
   partial model ElectricHouse
     extends ElectricDevice;
     
-    outer ElectricPort env_electric;
+    //outer ElectricPort env_electric;
     
     equation
-      connect(electric_in, env_electric);
-    
-      electric_out.v = electric_in.v;
+      //electric_in.v = env_electric.v;
+      //v = 120;
+      //electric_in.i = 10;
+      electric_out.v = 10;
     
   end ElectricHouse;
   
@@ -141,9 +144,9 @@ encapsulated package Technologies
   
   model House
     extends ElectricHouse;
-    extends ThermalHouse;
-    extends RadiativeHouse;
-    extends EconomicHouse;
+    //extends ThermalHouse;
+    //extends RadiativeHouse;
+    //extends EconomicHouse;
     
   end House;
   
