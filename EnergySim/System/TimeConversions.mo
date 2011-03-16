@@ -3,8 +3,8 @@ within EnergySim.System;
 encapsulated package TimeConversions
   
   function hour_of_day
-    input Time s "second value, since year start";
-    output Integer hour "hour, since day start";
+    input Real s "second value, since year start";
+    output Real hour "hour, since day start";
   
     algorithm
       hour := mod(s,86400) / 86400;

@@ -1,4 +1,5 @@
 *.tmproj
+*.komodoproject
 *.log
 *.cpp
 *.makefile
@@ -7,4 +8,4 @@
 *.libs
 *.plt
 *.txt
-Scenarios/ModelTest/sim/EnergySimTest
+*.exe
