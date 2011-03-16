@@ -6,5 +6,5 @@ model EnergySimTest
   import EnergySim.Technologies.*;
   
   public
-    Solar.solar_pv  panel1();
+    Solar.solar_pv  panel1;
 end EnergySimTest;

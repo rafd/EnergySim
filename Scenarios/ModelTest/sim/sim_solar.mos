@@ -3,6 +3,6 @@ loadModel(Modelica.SIUnits);
 loadModel(EnergySim);
 loadFile("../solar_test.mo");
 getErrorString();
-simulate(EnergySimTest, stopTime=12.0);
+simulate(EnergySimTest, startTime=3600, stopTime=10800, numberOfIntervals=1);
 getErrorString();
-plot({panel1.Electricity});
+plot({panel1.Output_Electricity, panel1.hour});
