@@ -12,13 +12,19 @@ model EnergySimTest
   extends EnergySim.System.Environment;
   
   //Real fixed_cost;
+  flow Current current_in;// = 20;
+  flow Current current_out;
   
   public
     House       house;
   
   equation
-    connect(house.electric_in, env_electric_in);
-    connect(house.electric_out, env_electric_out);
+    house.electric_in.v = 240;
+    house.electric_in.i = current_in;
+    house.electric_out.i = current_out;
+    //house.electric_in.v = env_electric_in.v;
+    //house.electric_out.v = env_electric_out.v;
+    //connect(house.electric_out, env_electric_out);
   //algorithm  
     
     //Dwelling    house_usual(UWall=0.28);

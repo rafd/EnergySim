@@ -27,7 +27,7 @@ encapsulated package Technologies
   
   connector ElectricPort
     Voltage v "potential at the port";
-    //flow Current i "current flowing into the port";
+    flow Current i "current flowing into the port";
   end ElectricPort;
   
   
@@ -116,9 +116,9 @@ encapsulated package Technologies
     
     equation
       //electric_in.v = env_electric.v;
-      //v = 120;
+      v = 120;
       //electric_in.i = 10;
-      electric_out.v = 10;
+      //electric_out.v = 10;
     
   end ElectricHouse;
   

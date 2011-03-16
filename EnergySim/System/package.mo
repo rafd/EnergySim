@@ -8,19 +8,19 @@ encapsulated package System
   
   model Environment
     //inner ThermalPort env_thermal;
-    inner ElectricPort env_electric_in;
-    inner ElectricPort env_electric_out;
+    //ElectricPort env_electric_in;
+    //ElectricPort env_electric_out;
 
     //input Real ambient_temperature = 300;
-    input Real ambient_voltage = 120;
+    //input Real ambient_voltage = 120;
     //input Real ambient_current = 10;
     
-    Real output_voltage;
+    //Real output_voltage;
         
-    equation
+    //equation
       //env_thermal.T = ambient_temperature;
-      env_electric_in.v = ambient_voltage;
-      env_electric_out.v = output_voltage;
+      //env_electric_in.v = ambient_voltage;
+      //env_electric_out.v = output_voltage;
       
       //env_electric_in.i = ambient_current;
      // 0 = env_electric_in.i + env_electric_out.i; 
