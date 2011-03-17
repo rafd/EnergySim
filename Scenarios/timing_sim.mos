@@ -1,0 +1,13 @@
+runScript("_sim.mos");
+getErrorString();
+loadFile("timing.mo");
+getErrorString();
+// 1 hour = 3600
+// 1 day = 86400
+// 1 week = 604800
+// 1 year = 31536000
+// minimum numberOfIntervals = 2 * seconds_of_simulation / 3600
+simulate(Timing, startTime=0, stopTime=1814400, numberOfIntervals=1008);//, outputFormat="csv");
+getErrorString();
+plot({hour, day, week});
+getErrorString();

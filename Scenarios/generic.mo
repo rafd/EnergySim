@@ -8,12 +8,9 @@ end TenHouses;
 
 model EnergySimTest
   import EnergySim.Technologies.*;
-  //import EnergySim.System.TimeConversions.*;
-  
+ 
   extends EnergySim.System.Environment;
   
-  
-  Real Hour = floor(mod(time, 86400) / 3600);
   //Real fixed_cost;
   flow Current current_in;// = 20;
   flow Current current_out;
