@@ -1,0 +1,1 @@
+system("R < report.R --no-save");
