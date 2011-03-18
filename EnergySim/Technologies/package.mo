@@ -3,8 +3,13 @@ encapsulated package Technologies
   "Technology package"
   import Modelica.SIunits.*;
   
+  
+  // UNITS
+  
   type FixedCost = Real(final quantity="Fixed Cost", final unit="$");
   type VariableCost = Real(final quantity="Variable Cost", final unit="$/year");
+  type Power = Real(final quantity="Power", final unit="J");
+  
   
   // CONNECTORS (PORTS)
   
@@ -12,6 +17,7 @@ encapsulated package Technologies
     FixedCost fixed_cost "Fixed cost in dollars.";
     //flow Cost variable_cost "Variable cost, in dollars/year"
   end EconomicPort;
+  
   
   connector ThermalPort
     Temperature T "Temperature in [K]";
@@ -26,10 +32,8 @@ encapsulated package Technologies
   
   
   connector ElectricPort
-    Voltage v "potential at the port";
-    flow Current i "current flowing into the port";
+    flow Power P "power flowing into the port";
   end ElectricPort;
-  
   
   
   // GENERIC DEVICES
@@ -51,18 +55,13 @@ encapsulated package Technologies
   partial model ElectricDevice
     extends GenericDevice;
     
-    Voltage v "voltage drop between electric_in and electric_out";
-    //Current i "current flow from elec_in to elec_out";
-    //ActivePower P "active power of device";
-    
     ElectricPort electric_in;
     ElectricPort electric_out;
     
+    Power power_demand;
+    
     equation
-      v	= electric_in.v - electric_out.v; 
-      //0 = electric_in.i + electric_out.i; 
-      //i = electric_in.i;
-      //P = v * i;
+      power_demand = electric_in.P - electric_out.P;
     
   end ElectricDevice;
   
@@ -93,6 +92,7 @@ encapsulated package Technologies
   
   
   // HOUSE
+  
   partial model EconomicHouse
     extends EconomicDevice;
     
@@ -112,13 +112,11 @@ encapsulated package Technologies
   partial model ElectricHouse
     extends ElectricDevice;
     
-    //outer ElectricPort env_electric;
+    //flow Power power = 10;
     
     equation
-      //electric_in.v = env_electric.v;
-      v = 120;
-      //electric_in.i = 10;
-      //electric_out.v = 10;
+      //electric_out.P = power;
+      power_demand = 200;
     
   end ElectricHouse;
   
@@ -144,9 +142,6 @@ encapsulated package Technologies
   
   model House
     extends ElectricHouse;
-    //extends ThermalHouse;
-    //extends RadiativeHouse;
-    //extends EconomicHouse;
     
   end House;
   
