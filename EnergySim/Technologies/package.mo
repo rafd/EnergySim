@@ -55,13 +55,13 @@ encapsulated package Technologies
   partial model ElectricDevice
     extends GenericDevice;
     
-    ElectricPort electric_in;
-    ElectricPort electric_out;
+    //ElectricPort electric_in;
+    //ElectricPort electric_out;
     
     Power power_demand;
     
     equation
-      power_demand = electric_in.P - electric_out.P;
+      //power_demand = electric_in.P - electric_out.P;
     
   end ElectricDevice;
   
@@ -113,10 +113,18 @@ encapsulated package Technologies
     extends ElectricDevice;
     
     //flow Power power = 10;
+    //Power house_power_draw(start=0);
     
+    //algorithm
+      //house_power_draw := house_power_draw + 5;
+    initial equation
+      power_demand = 0;
     equation
       //electric_out.P = power;
-      power_demand = 200;
+      //power_demand = house_power_draw;
+    
+    
+      
     
   end ElectricHouse;
   

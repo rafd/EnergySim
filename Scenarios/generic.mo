@@ -17,8 +17,22 @@ end Outside;
 model SomeTech
   import EnergySim.Technologies.*;
   extends ElectricDevice;
+  
+  equation
+    power_demand = 37;    
 
 end SomeTech;
+
+model HouseWithSomeTech
+  import EnergySim.Technologies.*;
+  extends House;
+  
+  SomeTech some_tech;
+
+  equation
+    power_demand = some_tech.power_demand;
+
+end HouseWithSomeTech;
 
 model EnergySimTest
   import EnergySim.Technologies.*;
@@ -26,11 +40,11 @@ model EnergySimTest
   extends EnergySim.System.Environment;
   
   public
-    House       house;
-    Outside     outside;
+    HouseWithSomeTech       house;
+    //Outside                 outside;
     
   equation
-    connect(house.electric_out, outside.electric_in);
-    connect(house.electric_in, outside.electric_out);
+    //connect(house.electric_out, outside.electric_in);
+    //connect(house.electric_in, outside.electric_out);
   
 end EnergySimTest;
