@@ -1,0 +1,8 @@
+loadModel(Modelica.Constants);
+loadModel(Modelica.SIUnits);
+loadModel(EnergySim);
+loadFile("generic.mo");
+getErrorString();
+simulate(EnergySimTest, startTime=0, stopTime=86400, numberOfIntervals=48);
+getErrorString();
+plot({house.electric_in.P, house.electric_out.P});

@@ -1,9 +1,0 @@
-loadModel(Modelica.Constants);
-loadModel(Modelica.SIUnits);
-loadModel(EnergySim);
-loadFile("../model_test.mo");
-getErrorString();
-simulate(EnergySimTest, startTime=0, stopTime=86400, numberOfIntervals=1000);
-getErrorString();
-plot({house.electric_in.v, house.electric_out.v, house.electric_in.i, house.electric_out.i, Hour});
-//simulate(EnergySimTest, startTime=0, stopTime=86400, numberOfIntervals=1000, outputFormat="csv");
