@@ -38,12 +38,14 @@ model EnergySimTest
   import EnergySim.Technologies.*;
  
   extends EnergySim.System.Environment;
+  extends ElectricDevice;
   
   public
-    HouseWithSomeTech       house;
+    HouseWithSomeTech       house[2];
     //Outside                 outside;
     
   equation
+    power_demand = house[1].power_demand + house[2].power_demand;
     //connect(house.electric_out, outside.electric_in);
     //connect(house.electric_in, outside.electric_out);
   

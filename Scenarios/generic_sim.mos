@@ -5,4 +5,5 @@ loadFile("generic.mo");
 getErrorString();
 simulate(EnergySimTest, startTime=0, stopTime=86400, numberOfIntervals=48);
 getErrorString();
-plot({house.power_demand});
+plot({house[1].power_demand, power_demand});
+getErrorString();
