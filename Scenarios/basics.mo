@@ -38,6 +38,7 @@ encapsulated package EnergySim
     
     equation
       connect(i, comm_io);
+      connect(i, o);
     
   end Community;
 
@@ -71,10 +72,6 @@ model HarbordVillage
   extends EnergySim.Community;
   
   EnergySim.Building buildings[10];
-  
-  equation
-    connect(i, o);
-    
   
 end HarbordVillage;
 
