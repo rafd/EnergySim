@@ -1,0 +1,8 @@
+runScript("_sim.mos");
+getErrorString();
+loadFile("basics.mo");
+getErrorString();
+simulate(Basics, startTime=0, stopTime=86400, numberOfIntervals=48);
+getErrorString();
+plot({system.P, community.P, community.buildings[1].P});
+getErrorString();
