@@ -33,6 +33,7 @@ encapsulated package EnergySim
   
   connector MultiPort
     flow Power P;
+    flow Cost C;
     
     State S;
   end MultiPort;
@@ -44,12 +45,15 @@ encapsulated package EnergySim
     
     Power P "power produced";
     State S "states s of object";
+    Cost C "cost";
      
     equation
       P = o.P - i.P;
       
       S = i.S;
       o.S = i.S; //temperature is state, in = out
+      
+      C = o.C - i.C;
     
   end MultiDevice;
   
@@ -100,6 +104,8 @@ encapsulated package EnergySim
       connect(comm_io, i);
       
       der(TotalCost) = RunningCost;
+      
+      C = TotalCost;
         
   end Technology;
 
@@ -111,6 +117,8 @@ encapsulated package EnergySim
     equation
       P = -120;
       connect(comm_io, i);
+      
+      C = 0;
       
   end Building;
 
