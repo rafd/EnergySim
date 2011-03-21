@@ -2,6 +2,7 @@ encapsulated package EnergySim
   
   type Power = Real(final quantity="Power", final unit="J");
   type Temperature = Real;
+  type State = Real;
   
   constant Real seconds_in_day = 86400;
   constant Real seconds_in_year = 31536000;
@@ -32,7 +33,7 @@ encapsulated package EnergySim
   connector MultiPort
     flow Power P;
     
-    Temperature T;
+    State S;
   end MultiPort;
   
   
@@ -41,12 +42,13 @@ encapsulated package EnergySim
     MultiPort o;
     
     Power P "power produced";
-    Temperature T "temperature of object";
+    State S "states s of object";
     
     equation
       P = o.P - i.P;
-      T = i.T;
-      o.T = i.T; //temperature is state, in = out
+      
+      S = i.S;
+      o.S = i.S; //temperature is state, in = out
     
   end MultiDevice;
   
@@ -60,8 +62,7 @@ encapsulated package EnergySim
       
     equation
       connect(i, ground);
-      ground.T = temp_outside;
-      o.T = i.T;
+      ground.S = 0;//temp_outside;
       
     algorithm
       temp_outside := system_temperature(time);
