@@ -58,14 +58,14 @@ encapsulated package EnergySim
 
     MultiPort ground;
     
-    Temperature temp_outside;
+    Temperature temperature;
       
     equation
       connect(i, ground);
       ground.S = 0;//temp_outside;
       
     algorithm
-      temp_outside := system_temperature(time);
+      temperature := system_temperature(time);
       
     
   end System;

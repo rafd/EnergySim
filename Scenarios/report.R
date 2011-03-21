@@ -46,24 +46,24 @@ title(main="Temperature")#, line=-5)
 par(mar=margin)
 
 # temperature yearly
-plot(daily_averages$system.T-273,type='l', xlab="", ylab="C", axes=F, ylim=c(-20, 40))
+plot(daily_averages$system.temperature-273,type='l', xlab="", ylab="C", axes=F, ylim=c(-20, 40))
 title(main="Yearly")
 axis(1, at=0:11*31536000/12, labels=c("J","F","M","A","M","J","J","A","S","O","N","D"),tick=T, col=col_annot)
 axis(2, col=col_annot)
 
 # temperature summer
-plot(data$time[summer_day_range], data$system.T[summer_day_range]-273, type='l',  xlab="", ylab='kW', axes=F, ylim=c(-20, 40))
+plot(data$time[summer_day_range], data$system.temperature[summer_day_range]-273, type='l',  xlab="", ylab='kW', axes=F, ylim=c(-20, 40))
 axis(1, col=col_annot, at=0:24*seconds_per_hour+data$time[summer_day_range][1], labels=0:24)
 axis(2, col=col_annot)
 title(main="Summer Day")
 
 # temperature winter
-plot(data$time[winter_day_range], data$system.T[winter_day_range]-273, type='l', xlab="", ylab="", axes=F, ylim=c(-20, 40))
+plot(data$time[winter_day_range], data$system.temperature[winter_day_range]-273, type='l', xlab="", ylab="", axes=F, ylim=c(-20, 40))
 axis(1, col=col_annot, at=0:24*seconds_per_hour+data$time[winter_day_range][1], labels=0:24)
 title(main="Winter Day")
 
 # temperature fall/spring
-plot(data$time[fallspring_day_range], data$system.T[fallspring_day_range]-273, type='l', xlab="", ylab="", axes=F, ylim=c(-20, 40))
+plot(data$time[fallspring_day_range], data$system.temperature[fallspring_day_range]-273, type='l', xlab="", ylab="", axes=F, ylim=c(-20, 40))
 axis(1, col=col_annot, at=0:24*seconds_per_hour+data$time[fallspring_day_range][1], labels=0:24)
 title(main="Spring/Fall Day")
 
