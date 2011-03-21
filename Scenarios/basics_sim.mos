@@ -2,7 +2,12 @@ runScript("_sim.mos");
 getErrorString();
 loadFile("basics.mo");
 getErrorString();
-simulate(Basics, startTime=0, stopTime=86400, numberOfIntervals=48);
+// 1 hour = 3600
+// 1 day = 86400
+// 1 week = 604800
+// 1 year = 31536000   (NOI=17520)
+// minimum numberOfIntervals = 2 * seconds_of_simulation / 3600
+simulate(Basics, startTime=0, stopTime=31536000, numberOfIntervals=17520, outputFormat="csv");
 getErrorString();
-plot({system.P, community.P, community.buildings[1].P});
-getErrorString();
+//plot({system.P, community.P, community.buildings[1].P, system.T});
+//getErrorString();
