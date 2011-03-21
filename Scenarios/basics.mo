@@ -3,6 +3,7 @@ encapsulated package EnergySim
   type Power = Real(final quantity="Power", final unit="J");
   type Temperature = Real;
   type State = Real;
+  type Cost = Real;
   
   constant Real seconds_in_day = 86400;
   constant Real seconds_in_year = 31536000;
@@ -43,7 +44,7 @@ encapsulated package EnergySim
     
     Power P "power produced";
     State S "states s of object";
-    
+     
     equation
       P = o.P - i.P;
       
@@ -85,7 +86,21 @@ encapsulated package EnergySim
 
   model Technology
     extends MultiDevice;
+    outer MultiPort comm_io;
+    
+    Cost FixedCost = 100; // $
+    Cost RunningCost = 0.01; // $/s
+    Cost TotalCost; // $
 
+    initial equation
+      TotalCost = FixedCost;
+    
+    equation
+      P = -120;
+      connect(comm_io, i);
+      
+      der(TotalCost) = RunningCost;
+        
   end Technology;
 
 
@@ -113,6 +128,8 @@ model HarbordVillage
   extends EnergySim.Community;
   
   EnergySim.Building buildings[1];
+  
+  EnergySim.Technology technology[1];
   
 end HarbordVillage;
 
