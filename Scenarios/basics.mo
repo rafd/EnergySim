@@ -135,9 +135,9 @@ end Ontario;
 model HarbordVillage
   extends EnergySim.Community;
   
-  EnergySim.Building buildings[1];
+  EnergySim.Building buildings[10];
   
-  EnergySim.Technology technology[1];
+  EnergySim.Technology technology[10];
   
 end HarbordVillage;
 
