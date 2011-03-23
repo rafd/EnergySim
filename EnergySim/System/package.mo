@@ -15,8 +15,10 @@ encapsulated package System
 
   encapsulated package Region
     import Modelica.SIunits.Temperature;
+    import Modelica.SIunits.Time;
     import Modelica.SIunits.Height;
     import Modelica.SIunits.Velocity;
+    import Modelica.SIunits.Conversions.to_day;
    
     //================================================================================================
     //Model for simulate ambient temperature of the region
@@ -64,6 +66,7 @@ encapsulated package System
     // Created by Kun Xie 2010/03/07
     // Added Wind Roses expression
     //================================================================================================ 
+    
     model wind_ambient
      
       
@@ -79,7 +82,49 @@ encapsulated package System
     equation
         
     end wind_ambient;
+
+    //================================================================================================
+    // Model for describing solar influx of the region of the region
+    // Input: Local standard time, Longitude/Latitude of the location
+    // Output: DynamicSolarInsulation W/m^2
+    // Default data are from Annex
+    // Created by Kun Xie 2010/03/07
+    // Added Wind Roses expression
+    //================================================================================================ 
+
   
+   model solar_influx
+      parameter Time LST=12*60*60 "local standard time in seconds, default value 12:00:00 PM";
+      parameter Real STML=75 "Standard Time Meridian Longitude";
+      parameter Real Longitude = 79.62 "longitude of location";
+      parameter Real Latitude = 43.58 "latitude of locatoin";
+      parameter Real OpticalDepth = 0.144 "local optical depth";
+      parameter Real Reflectivity = 0 "reflectivity around the subject of interest, 0.8 for snow, 0.2 for grass";
+      parameter Real SkyDiffuseFactor = 0.08 "radiation factors diffused from sky";
+      parameter Real DegreeToRad=2*Modelica.Constants.pi/360 "the degree to rad conversion factor";
+      Real DayOfTheYear;
+      Real B "intermediate vairiable for calculation, unit Rad";
+      Real ET "intermediate vairiable for calculation, unit Min";
+      Real Solartime "time of the day that solar influx existed, unit Min"; 
+      Real HourAngle ;
+      Real SolarDeclination;
+      Real SolarAltitudeAngle;
+      Real SolarAzumuthAngle;
+      Real DynamicSolarInsolation;
+      
+      equation
+      
+      DayOfTheYear = integer(time/24/60/60);
+      B=360*(DayOfTheYear-81)/364*DegreeToRad;
+      ET= 9.81*sin(2*B)-7.53*cos(B)-1.55*sin(B);
+      Solartime = (LST+ET+(STML-Longitude))/60;
+      HourAngle=(Solartime-12*60)/4;
+      SolarDeclination=23.45*sin(360*(284+DayOfTheYear)/365*DegreeToRad);
+      SolarAltitudeAngle=(1/DegreeToRad)*asin(sin(Latitude*DegreeToRad)*sin(SolarDeclination*DegreeToRad)+cos(Latitude*DegreeToRad)*cos(SolarDeclination*DegreeToRad)*cos(HourAngle*DegreeToRad));
+      SolarAzumuthAngle=(1/DegreeToRad)*asin(cos(SolarDeclination*DegreeToRad)*sin(HourAngle*DegreeToRad)/cos(SolarAltitudeAngle*DegreeToRad));
+      DynamicSolarInsolation=1353*(1+0.034*cos(360*DayOfTheYear/365.25*DegreeToRad));
+      
+    end solar_influx;
     
     
    function temperature_outside
@@ -101,7 +146,9 @@ encapsulated package System
       result := Occupants.preferred_temperature(Region.temperature_outside(time)) - Region.temperature_outside(time);
 
   end temperature_delta;
-
+  
+  
+  
   //"Condition: Time = "month, i.e time=12 means 12 months"
   //"Assumption: Annual temperature variation based on sinusoidal wave functions, ignore fluctuation within one month"
   //"Assumption: Heating efficiency is 40%"

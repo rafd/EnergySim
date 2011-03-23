@@ -3,6 +3,6 @@ loadModel(Modelica.SIUnits);
 loadModel(EnergySim);
 loadFile("../model_test.mo");
 getErrorString();
-simulate(EnergySimTest, stopTime=5*365.25*24*60*60); //5 years
+simulate(EnergySimTest, stopTime=365*24*60*60); 
 getErrorString();
-plot(test_wt.CurrentValue);
+plot(test_s.DynamicSolarInsolation);
