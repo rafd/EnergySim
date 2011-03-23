@@ -33,7 +33,9 @@ encapsulated package EnergySim
   
   connector MultiPort
     flow Power P;
-    flow Cost C;
+    
+    flow Cost FC "fixed cost";
+    flow Cost RC "running cost, per sec";
     
     State S;
   end MultiPort;
@@ -45,15 +47,25 @@ encapsulated package EnergySim
     
     Power P "power produced";
     State S "states s of object";
-    Cost C "cost";
-     
+    
+    Cost FixedCost;
+    Cost RunningCost;
+    Cost TotalCost;
+    
+    initial equation
+      TotalCost = FixedCost;
+    
     equation
       P = o.P - i.P;
       
       S = i.S;
       o.S = i.S; //temperature is state, in = out
       
-      C = o.C - i.C;
+      FixedCost = o.FC - i.FC;
+      RunningCost = o.RC - i.RC;
+      
+      der(TotalCost) = RunningCost;
+      
     
   end MultiDevice;
   
@@ -91,21 +103,17 @@ encapsulated package EnergySim
   model Technology
     extends MultiDevice;
     outer MultiPort comm_io;
-    
-    Cost FixedCost = 100; // $
-    Cost RunningCost = 0.01; // $/s
-    Cost TotalCost; // $
 
     initial equation
-      TotalCost = FixedCost;
-    
+      
+       
     equation
+      FixedCost = 100;
+      RunningCost = 0.01;
+      
       P = -120;
+      
       connect(comm_io, i);
-      
-      der(TotalCost) = RunningCost;
-      
-      C = TotalCost;
         
   end Technology;
 
@@ -114,11 +122,16 @@ encapsulated package EnergySim
     extends MultiDevice;
     outer MultiPort comm_io;
 
-    equation
-      P = -120;
-      connect(comm_io, i);
+    initial equation
       
-      C = 0;
+
+    equation
+      FixedCost = 200;
+      RunningCost = 0.0001;
+      
+      P = -120;
+      
+      connect(comm_io, i);
       
   end Building;
 
@@ -135,9 +148,9 @@ end Ontario;
 model HarbordVillage
   extends EnergySim.Community;
   
-  EnergySim.Building buildings[10];
+  EnergySim.Building buildings[5];
   
-  EnergySim.Technology technology[10];
+  EnergySim.Technology technology[5];
   
 end HarbordVillage;
 

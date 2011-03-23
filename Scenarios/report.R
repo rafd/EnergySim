@@ -9,6 +9,10 @@ if(.Platform$OS.type=="windows") {
 
 data <- read.csv("~/Code/EnergySim/Scenarios/Basics_res.csv", sep=",", head=TRUE)
 
+columns_of_interest = c('time', 'community.TotalCost', 'system.temperature', 'day', 'community.P', 'community.FixedCost', 'community.RunningCost')
+
+data <- data[columns_of_interest]
+
 zoo_data <- zoo(data) #TODO: use a subset of data, not all of it
 
 daily_averages <- aggregate(zoo_data, zoo_data$day, mean)
@@ -169,14 +173,14 @@ plot(data$time, data$house.v, type='l', xlab="", ylab="", axes=F)
 axis(1, col=col_annot)
 
 
-####### TOTAL ENERGY COST
+####### TOTAL COST
 par(mar=col0margin)
 plot.new()
-title(main="Total Energy Cost")#, line=-5)
+title(main="Total Cost")#, line=-5)
 par(mar=margin)
 
 # nat_gas_demand yearly
-plot(data$time, data$house.v, type='l', xlab="", ylab=expression(paste("m"^{3})), axes=F)
+plot(data$time, daily_averages$system.TotalCost, type='l', xlab="", ylab=expression(paste("m"^{3})), axes=F)
 axis(1, col=col_annot)
 axis(2, col=col_annot)
 
