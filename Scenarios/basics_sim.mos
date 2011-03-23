@@ -2,6 +2,7 @@ runScript("_sim.mos");
 getErrorString();
 loadFile("basics.mo");
 getErrorString();
+//checkModel(Basics);
 // 1 hour = 3600
 // 1 day = 86400
 // 1 week = 604800

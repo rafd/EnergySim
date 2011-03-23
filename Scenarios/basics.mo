@@ -91,10 +91,10 @@ encapsulated package EnergySim
   model Community
     extends MultiDevice;
     
-    inner MultiPort comm_io;
+    inner MultiPort community_io;
     
     equation
-      connect(i, comm_io);
+      connect(i, community_io);
       connect(i, o);
     
   end Community;
@@ -102,38 +102,61 @@ encapsulated package EnergySim
 
   model Technology
     extends MultiDevice;
-    outer MultiPort comm_io;
+  end Technology;
+  
+  model CommunityTechnology
+    extends Technology;
+    
+    outer MultiPort community_io;
+    
+    equation
+      connect(community_io, i);
+  
+  end CommunityTechnology;
+  
+  model BuildingTechnology
+    extends Technology;
+    
+    outer MultiPort building_io;
 
-    initial equation
+    equation
+      connect(building_io, i);
       
-       
+  end BuildingTechnology;
+  
+  model SpecificCommunityTechnology
+    extends CommunityTechnology;
+    
     equation
       FixedCost = 100;
       RunningCost = 0.01;
-      
       P = -120;
-      
-      connect(comm_io, i);
-        
-  end Technology;
-
-
-  model Building 
-    extends MultiDevice;
-    outer MultiPort comm_io;
-
-    initial equation
-      
-
+  end SpecificCommunityTechnology;
+  
+  model SpecificBuildingTechnology
+    extends BuildingTechnology;
     equation
-      FixedCost = 200;
-      RunningCost = 0.0001;
-      
+      FixedCost = 100;
+      RunningCost = 0.01;
       P = -120;
-      
-      connect(comm_io, i);
-      
+  end SpecificBuildingTechnology;
+
+  model Building
+    extends MultiDevice;
+    
+    outer MultiPort community_io;
+    inner MultiPort building_io;
+    
+    SpecificBuildingTechnology tech[2];
+    
+    equation
+      connect(community_io, i);
+      connect(i, building_io);
+      //connect(i, o);
+  
   end Building;
+  
+  
 
 end EnergySim;
 
@@ -148,22 +171,22 @@ end Ontario;
 model HarbordVillage
   extends EnergySim.Community;
   
-  EnergySim.Building buildings[5];
-  
-  EnergySim.Technology technology[5];
+  //EnergySim.Building bdgs[3];
+  //EnergySim.Building bdgss[3];
+  EnergySim.SpecificCommunityTechnology tech[4];
   
 end HarbordVillage;
 
 
 model Basics
   
-  Ontario           system;
-  HarbordVillage    community;
+  Ontario           sys;
+  HarbordVillage    com;
   
   Real day = floor(time / 86400);
   
   equation
-    connect(system.i, community.o);
-    connect(system.o, community.i);
+    connect(sys.i, com.o);
+    connect(sys.o, com.i);
   
 end Basics;
