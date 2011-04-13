@@ -35,8 +35,7 @@ encapsulated package EnergySim
     flow Power P;
     
     //State S;
-    //flow Cost FC "fixed cost";
-    //flow Cost RC "running cost, per sec";
+    flow Cost TC "total cost";
   end MultiPort;
   
   
@@ -52,6 +51,8 @@ encapsulated package EnergySim
       
       //S = i.S;
       //o.S = i.S; 
+      
+      TotalCost = o.TC - i.TC;
     
   end MultiDevice;
   
@@ -62,6 +63,8 @@ encapsulated package EnergySim
     MultiPort ground;
     
     Temperature temperature;
+    
+    Cost TotalCost;
       
     equation
       connect(i, ground);
@@ -76,6 +79,8 @@ encapsulated package EnergySim
 
   model Community
     extends MultiDevice;
+    
+    Cost TotalCost;
     
     inner MultiPort community_io;
     
@@ -148,10 +153,10 @@ encapsulated package EnergySim
     
     SpecificBuildingTechnology tech[2];
     
+    Cost TotalCost;
+    
     equation
-      //connect(community_io, i);
       connect(i, building_io);
-      //connect(i, o);
 
   end Building;
   
