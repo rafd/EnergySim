@@ -1,0 +1,15 @@
+runScript("_sim.mos");
+getErrorString();
+loadFile("thermal_building.mo");
+getErrorString();
+//checkModel(Basics);
+// 1 hour = 3600
+// 1 day = 86400
+// 1 week = 604800
+// 1 year = 31536000   (NOI=17520)
+// minimum numberOfIntervals = 2 * seconds_of_simulation / 3600
+//simulate(Basics, startTime=0, stopTime=31536000, numberOfIntervals=17520, outputFormat="csv");
+simulate(ThermalBuilding, startTime=0, stopTime=259200, numberOfIntervals=145, outputFormat="csv");
+getErrorString();
+//plot({T, T_out, dot_Q_in});
+//getErrorString();
