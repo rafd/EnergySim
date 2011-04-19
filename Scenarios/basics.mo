@@ -180,15 +180,13 @@ encapsulated package EnergySim
       inner Temperature building_temperature "Temp, in Kelvin";
       
       ThermalEnergy E;
-      Temperature T "Temp, in Kelvin";
       
       initial equation
         E = 1*building_temperature;
         
       equation
-        T = building_temperature;
       
-        der(E) = 100*der(T); //or should this be E=kT?
+        der(E) = 100*der(building_temperature); //or should this be E=kT?
 
         der(E) = Q;// + heater_power;
         
@@ -212,8 +210,12 @@ encapsulated package EnergySim
      
      
     model Thermostat
+      Boolean air_conditioner_on(start=false);
+      Boolean heater_on(start=false);
+    
     end Thermostat; 
-     
+    
+    
     model PeakSaver
     end PeakSaver;
     
@@ -223,6 +225,14 @@ encapsulated package EnergySim
     
     
     model Heater
+      extends EnergySim.BuildingTechnology;
+      extends EnergySim.EconomicTechnology(FixedCost=60000);
+    
+      equation
+        Q =  0.01;
+        RunningCost = 0.01;
+        P = -0.01;
+    
     end Heater;
     
     
@@ -257,7 +267,7 @@ model SpecificBuildingTechnology
   equation
     RunningCost = 0.01;
     P = -120;
-    Q = 10;
+    Q = 0;
     
 end SpecificBuildingTechnology;
 
@@ -266,6 +276,7 @@ model SpecificBuilding
   extends EnergySim.Tech.Building;
   
   EnergySim.Tech.Walls walls;
+  EnergySim.Tech.Heater heater;
   SpecificBuildingTechnology tech[2];
 
 end SpecificBuilding;
