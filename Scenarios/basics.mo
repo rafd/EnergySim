@@ -1,6 +1,7 @@
 encapsulated package EnergySim
   
-  type Power = Real(final quantity="Power", final unit="J");
+  type ElectricPower = Real(final quantity="Power", final unit="J");
+  type ThermalPower = Real(final quantity="Power", final unit="J");
   type Temperature = Real;
   type State = Real;
   type Cost = Real;
@@ -31,28 +32,49 @@ encapsulated package EnergySim
   end system_temperature;
   
   
-  connector MultiPort
-    flow Power P;
-    
-    //State S;
+  // CONNECTORS
+  
+  
+  connector ThermalPort
+    flow ElectricPower P;
+  end ThermalPort;
+  
+  
+  connector ElectricPort
+    flow ThermalPower Q;
+  end ElectricPort;
+  
+  
+  connector EconomicPort
     flow Cost TC "total cost";
+  end EconomicPort;
+  
+  
+  connector MultiPort
+    extends ElectricPort;
+    extends ThermalPort;
+    extends EconomicPort;
   end MultiPort;
+  
+  
+  // MODELS
   
   
   partial model MultiDevice
     MultiPort i;
     MultiPort o;
     
-    Power P "power produced";
+    ElectricPower P "electric power out (produced)";
+    ThermalPower Q "thermal power out (heat produced)";
     //State S "states s of object";
     
     equation
       P = o.P - i.P;
+      Q = o.Q - i.Q;
+      TotalCost = o.TC - i.TC;
       
       //S = i.S;
-      //o.S = i.S; 
-      
-      TotalCost = o.TC - i.TC;
+      //o.S = i.S;       
     
   end MultiDevice;
   
@@ -101,13 +123,9 @@ encapsulated package EnergySim
       der(TotalCost) = RunningCost;
   end EconomicTechnology;
 
-  model Technology
-    extends MultiDevice;
-    
-  end Technology;
   
   model CommunityTechnology
-    extends Technology;
+    extends MultiDevice;
     
     outer MultiPort community_io;
     
@@ -116,8 +134,9 @@ encapsulated package EnergySim
   
   end CommunityTechnology;
   
+  
   model BuildingTechnology
-    extends Technology;
+    extends MultiDevice;
     
     outer MultiPort building_io;
 
@@ -126,45 +145,58 @@ encapsulated package EnergySim
       
   end BuildingTechnology;
   
-  model SpecificCommunityTechnology
-    extends CommunityTechnology;
-    extends EconomicTechnology(FixedCost=1000);
   
-    equation
-      RunningCost = 0.01;
-      P = -120;
-          
-  end SpecificCommunityTechnology;
-  
-  
-  model SpecificBuildingTechnology
-    extends BuildingTechnology;
-    extends EconomicTechnology(FixedCost=60000);
-
-    equation
-      RunningCost = 0.01;
-      P = -120;
-  end SpecificBuildingTechnology;
-
   model Building
-    extends CommunityTechnology;
+    extends EnergySim.CommunityTechnology;
     
     inner MultiPort building_io;
-    
-    SpecificBuildingTechnology tech[2];
     
     Cost TotalCost;
     
     equation
       connect(i, building_io);
-
-  end Building;
   
+  end Building;
   
 
 end EnergySim;
 
-/////////
+
+
+
+///////// SPECIFICS
+
+model SpecificCommunityTechnology
+  extends EnergySim.CommunityTechnology;
+  extends EnergySim.EconomicTechnology(FixedCost=1000);
+
+  equation
+    RunningCost = 0.01;
+    P = -120;
+    Q = 0;
+        
+end SpecificCommunityTechnology;
+
+
+model SpecificBuildingTechnology
+  extends EnergySim.BuildingTechnology;
+  extends EnergySim.EconomicTechnology(FixedCost=60000);
+
+  equation
+    RunningCost = 0.01;
+    P = -120;
+    Q = 10;
+    
+end SpecificBuildingTechnology;
+
+
+model SpecificBuilding
+  extends EnergySim.Building;
+  
+  SpecificBuildingTechnology tech[2];
+
+end SpecificBuilding;
+
 
 model Ontario
   extends EnergySim.System;
@@ -175,9 +207,10 @@ end Ontario;
 model HarbordVillage
   extends EnergySim.Community;
   
-  EnergySim.Building bdgs[3];
-  EnergySim.Building bdgss[3];
-  EnergySim.SpecificCommunityTechnology tech[4];
+  SpecificBuilding bdgs_a[3];
+  SpecificBuilding bdgs_b[3];
+  SpecificCommunityTechnology tech_a[2];
+  SpecificCommunityTechnology tech_b[2];
   
 end HarbordVillage;
 

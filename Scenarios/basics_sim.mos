@@ -8,7 +8,8 @@ getErrorString();
 // 1 week = 604800
 // 1 year = 31536000   (NOI=17520)
 // minimum numberOfIntervals = 2 * seconds_of_simulation / 3600
-simulate(Basics, startTime=0, stopTime=31536000, numberOfIntervals=17520, outputFormat="csv");
+//simulate(Basics, startTime=0, stopTime=31536000, numberOfIntervals=17520, outputFormat="csv");
+simulate(Basics, startTime=0, stopTime=604800, numberOfIntervals=336, outputFormat="csv");
 getErrorString();
 //plot({system.P, community.P, community.buildings[1].P, system.T});
 //getErrorString();
