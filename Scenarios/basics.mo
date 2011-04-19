@@ -145,19 +145,56 @@ encapsulated package EnergySim
       
   end BuildingTechnology;
   
+
   
-  model Building
-    extends EnergySim.CommunityTechnology;
-    
-    inner MultiPort building_io;
-    
-    Cost TotalCost;
-    
-    equation
-      connect(i, building_io);
   
-  end Building;
-  
+
+  encapsulated package Tech
+    import EnergySim.*;
+    
+    // Building
+    
+    model Building
+      extends CommunityTechnology;
+
+      inner MultiPort building_io;
+
+      Cost TotalCost;
+
+      equation
+        connect(i, building_io);
+
+    end Building;
+    
+    
+    partial model ThermalBuilding  
+    end ThermalBuilding;
+   
+    // Building Tech
+    
+    model Insulation
+    end Insulation;
+     
+     
+    model Thermostat
+    end Thermostat; 
+     
+    model PeakSaver
+    end PeakSaver;
+    
+    
+    model AirConditioner
+    end AirConditioner;
+    
+    
+    model Heater
+    end Heater;
+    
+    
+    // Community Tech
+    
+     
+  end Tech;
 
 end EnergySim;
 
@@ -191,7 +228,7 @@ end SpecificBuildingTechnology;
 
 
 model SpecificBuilding
-  extends EnergySim.Building;
+  extends EnergySim.Tech.Building;
   
   SpecificBuildingTechnology tech[2];
 
