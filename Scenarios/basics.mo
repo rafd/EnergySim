@@ -1,7 +1,8 @@
 encapsulated package EnergySim
   
-  type ElectricPower = Real(final quantity="Power", final unit="J");
-  type ThermalPower = Real(final quantity="Power", final unit="J");
+  type ElectricPower = Real(final quantity="Power", final unit="J/s");
+  type ThermalPower = Real(final quantity="Power", final unit="J/s");
+  type ThermalEnergy = Real(final quantity="Energy", final unit="J/s");
   type Temperature = Real;
   type State = Real;
   type Cost = Real;
@@ -139,6 +140,7 @@ encapsulated package EnergySim
     extends MultiDevice;
     
     outer MultiPort building_io;
+    outer Temperature building_temperature;
 
     equation
       connect(building_io, i);
@@ -156,6 +158,7 @@ encapsulated package EnergySim
     
     model Building
       extends CommunityTechnology;
+      extends ThermalBuilding;
 
       inner MultiPort building_io;
 
@@ -167,13 +170,45 @@ encapsulated package EnergySim
     end Building;
     
     
-    partial model ThermalBuilding  
+    partial model GeometricBuilding
+    
+    
+    end GeometricBuilding;
+    
+    
+    partial model ThermalBuilding
+      inner Temperature building_temperature "Temp, in Kelvin";
+      
+      ThermalEnergy E;
+      Temperature T "Temp, in Kelvin";
+      
+      initial equation
+        E = 1*building_temperature;
+        
+      equation
+        T = building_temperature;
+      
+        der(E) = 100*der(T); //or should this be E=kT?
+
+        der(E) = Q;// + heater_power;
+        
+    
     end ThermalBuilding;
    
     // Building Tech
     
-    model Insulation
-    end Insulation;
+    model Walls
+      extends EnergySim.BuildingTechnology;
+      extends EnergySim.EconomicTechnology(FixedCost=60000);
+      
+      outer Temperature outside_temperature;
+    
+      equation
+        Q =  0.001*(outside_temperature - building_temperature);
+        RunningCost = 0;
+        P = 0;
+    
+    end Walls;
      
      
     model Thermostat
@@ -230,6 +265,7 @@ end SpecificBuildingTechnology;
 model SpecificBuilding
   extends EnergySim.Tech.Building;
   
+  EnergySim.Tech.Walls walls;
   SpecificBuildingTechnology tech[2];
 
 end SpecificBuilding;
@@ -258,8 +294,12 @@ model Basics
   HarbordVillage    com;
   
   Real day = floor(time / 86400);
-    
+  
+  inner EnergySim.Temperature outside_temperature;
+  
   equation
+    outside_temperature = sys.temperature;
+  
     connect(sys.i, com.o);
     connect(sys.o, com.i);
   
