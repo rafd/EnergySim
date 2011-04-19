@@ -28,46 +28,43 @@ function system_temperature
 end system_temperature;
 
 
-
 model ThermalBuilding
-  Real Q "Heat Energy";
+  Real E "Heat Energy";
   Temperature T "Temp, in Kelvin";
-  Real C_p = 1.012;
-  Real M = 100;
   
-  Real conduction_in;
+  Real C_p = 1.012;
+  Real Side = 20.0;
+  Real M = Side^3 * 1.294;
+  Real ConvCoeff = 5;
+  Real SurfaceArea = Side^2*5;
+  
+  Real convection;
   Real T_out = system_temperature(time);
   
   Boolean heater_on(start=false);
   Real heater_power;
-  //Real hp_new;
   
   initial equation
-    Q = M*C_p*T;
+    E = T*1;
     T = 300;
     
   equation
-    Q = M*C_p*T;
     
-    conduction_in =  (T_out - T)/250.0;
+    der(E) = 100*der(T); //or should this be E?
+    
+    convection =  0.001*(T_out - T);
     
     if heater_on then
-      heater_power = 0.2;
+      heater_power = 0.1;
     else 
       heater_power = 0;
     end if;
     
-    der(Q) = conduction_in + heater_power;
+    der(E) = convection + heater_power;
     
-    //heater_power = 0;
-    
-    when {T < 20+273, T > 22+273} then
+    when {T < 20+273, T > 25+273} then
       heater_on = T < 20+273;
-      //hp_new = if heater_on then 0.25 else 0;
-      //reinit(heater_power, hp_new);
     end when;
       
-    
-  
 
 end ThermalBuilding;
