@@ -178,7 +178,7 @@ encapsulated package EnergySim
     
     
     partial model ThermalBuilding
-      inner Temperature building_temperature(start=300) "Temp, in Kelvin";
+      inner Temperature building_temperature(start=273+21) "Temp, in Kelvin";
       
       ThermalEnergy E;
       
@@ -189,7 +189,7 @@ encapsulated package EnergySim
       
         der(E) = 1000000*der(building_temperature); //or should this be E=kT?
 
-        der(E) = Q;
+        der(E) = Q; // Q is summative heat flow from building technologies
         
     
     end ThermalBuilding;
@@ -198,12 +198,12 @@ encapsulated package EnergySim
       
       EnergySim.Tech.Walls walls;
       EnergySim.Tech.Heater heater;
-      //EnergySim.Tech.AirConditioner ac;
+      EnergySim.Tech.AirConditioner ac;
       EnergySim.Tech.Thermostat thermostat;
       
       equation
         connect(heater.control, thermostat.heater_on);
-        //connect(ac.control, thermostat.ac_on);
+        connect(ac.control, thermostat.ac_on);
     
     end ThermalTechBuilding;
    
@@ -229,13 +229,23 @@ encapsulated package EnergySim
      
     model Thermostat
       SignalPort heater_on;
-      //SignalPort ac_on;
+      SignalPort ac_on;
       
       outer Temperature building_temperature;
+      
+      Temperature summer_target = 23;
+      Temperature winter_target = 21;
+      Temperature sensitivity = 0.5;
     
       equation
-        when {building_temperature < 20+273, building_temperature > 22+273} then
-          heater_on.s = building_temperature < 20+273;
+        // AC
+        when {building_temperature > summer_target+sensitivity+273, building_temperature < summer_target-sensitivity+273} then
+          ac_on.s = building_temperature > summer_target+sensitivity+273;
+        end when;
+        
+        // Heater
+        when {building_temperature < winter_target-sensitivity+273, building_temperature > winter_target+sensitivity+273} then
+          heater_on.s = building_temperature < winter_target-sensitivity+273;
         end when;
     
     end Thermostat; 
@@ -247,8 +257,26 @@ encapsulated package EnergySim
     end PeakSaver;
     
     
-    model AirConditioner
+    partial model ControlledDevice
+    
       SignalPort control;
+      
+      equation
+        RunningCost = if control.s then rated_running_cost else 0;
+        P = if control.s then rated_electric_power else 0;
+        Q = if control.s then rated_thermal_power else 0;
+    
+    end ControlledDevice;
+    
+    
+    model AirConditioner
+      extends EnergySim.BuildingTechnology;
+      extends EnergySim.EconomicTechnology(FixedCost=60000);
+      extends EnergySim.Tech.ControlledDevice;
+
+      ThermalPower rated_thermal_power = -1000;
+      ElectricPower rated_electric_power = -1500;
+      Cost rated_running_cost = 0.01; //TODO: should be a function of elec. cost
       
     end AirConditioner;
     
@@ -256,18 +284,12 @@ encapsulated package EnergySim
     model Heater
       extends EnergySim.BuildingTechnology;
       extends EnergySim.EconomicTechnology(FixedCost=60000);
+      extends EnergySim.Tech.ControlledDevice;
 
       ThermalPower rated_thermal_power = 1500;
       ElectricPower rated_electric_power = -1500;
       Cost rated_running_cost = 0.01; //TODO: should be a function of elec. cost
-      
-      SignalPort control;
-    
-      equation
-        RunningCost = if control.s then rated_running_cost else 0;
-        P = if control.s then rated_electric_power else 0;
-        Q = if control.s then rated_thermal_power else 0;
-    
+        
     end Heater;
     
     
