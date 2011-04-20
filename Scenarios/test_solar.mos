@@ -1,0 +1,8 @@
+loadModel(Modelica.Constants);
+loadModel(Modelica.SIUnits);
+loadModel(EnergySim);
+loadFile("../solar_test.mo");
+getErrorString();
+simulate(EnergySimTest, startTime=0, stopTime=864000, numberOfIntervals=864000);
+getErrorString();
+plot({panel1.hour, panel1.day, panel1.week});
