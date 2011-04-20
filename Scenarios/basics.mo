@@ -159,6 +159,7 @@ encapsulated package EnergySim
     model Building
       extends CommunityTechnology;
       extends ThermalBuilding;
+      extends ThermalTechBuilding;
 
       inner MultiPort building_io;
 
@@ -177,7 +178,7 @@ encapsulated package EnergySim
     
     
     partial model ThermalBuilding
-      inner Temperature building_temperature "Temp, in Kelvin";
+      inner Temperature building_temperature(start=300) "Temp, in Kelvin";
       
       ThermalEnergy E;
       
@@ -192,6 +193,19 @@ encapsulated package EnergySim
         
     
     end ThermalBuilding;
+    
+    partial model ThermalTechBuilding
+      
+      EnergySim.Tech.Walls walls;
+      EnergySim.Tech.Heater heater;
+      //EnergySim.Tech.AirConditioner ac;
+      EnergySim.Tech.Thermostat thermostat;
+      
+      equation
+        connect(heater.control, thermostat.heater_on);
+        //connect(ac.control, thermostat.ac_on);
+    
+    end ThermalTechBuilding;
    
     // Building Tech
     
@@ -208,30 +222,50 @@ encapsulated package EnergySim
     
     end Walls;
      
+    
+    connector SignalPort
+      Boolean s(start=false);
+    end SignalPort;
      
     model Thermostat
-      Boolean air_conditioner_on(start=false);
-      Boolean heater_on(start=false);
+      SignalPort heater_on;
+      //SignalPort ac_on;
+      
+      outer Temperature building_temperature;
+    
+      equation
+        when {building_temperature < 20+273, building_temperature > 25+273} then
+          heater_on.s = building_temperature < 20+273;
+        end when;
     
     end Thermostat; 
     
     
     model PeakSaver
+      SignalPort ac_on;
+      
     end PeakSaver;
     
     
     model AirConditioner
+      SignalPort control;
+      
     end AirConditioner;
     
     
     model Heater
       extends EnergySim.BuildingTechnology;
       extends EnergySim.EconomicTechnology(FixedCost=60000);
+
+      ThermalPower rated_thermal_power = 0.025;
+      ElectricPower rated_electric_power = -1500;
+      
+      SignalPort control;
     
       equation
-        Q =  0.01;
         RunningCost = 0.01;
-        P = -0.01;
+        P = if control.s then rated_electric_power else 0;
+        Q = if control.s then rated_thermal_power else 0;
     
     end Heater;
     
@@ -275,8 +309,6 @@ end SpecificBuildingTechnology;
 model SpecificBuilding
   extends EnergySim.Tech.Building;
   
-  EnergySim.Tech.Walls walls;
-  EnergySim.Tech.Heater heater;
   SpecificBuildingTechnology tech[2];
 
 end SpecificBuilding;
