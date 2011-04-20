@@ -1,6 +1,6 @@
 within EnergySim; 
-encapsulated package Tech
-  "Technology package"
+encapsulated package Building
+  "Building package"
   
   import EnergySim.*;
   
@@ -57,6 +57,5 @@ encapsulated package Tech
       connect(ac.control, thermostat.ac_on);
   
   end ThermalTechBuilding;
- 
   
-end Tech;
+end Building;

@@ -11,7 +11,7 @@ end SpecificCommunityTechnology;
 
 
 model SpecificBuildingTechnology
-  extends EnergySim.System.BuildingTechnology;
+  extends EnergySim.BuildingTech.BuildingTechnology;
   extends EnergySim.System.EconomicTechnology(FixedCost=60000);
 
   equation
@@ -23,7 +23,7 @@ end SpecificBuildingTechnology;
 
 
 model SpecificBuilding
-  extends EnergySim.Tech.Building;
+  extends EnergySim.Building.Building;
   
   SpecificBuildingTechnology tech[2];
 

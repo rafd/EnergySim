@@ -2,6 +2,19 @@ within EnergySim;
 encapsulated package BuildingTech
   "Building technology package"
   
+  import EnergySim.*;
+  
+  partial model BuildingTechnology
+    extends System.MultiDevice;
+    
+    outer System.MultiPort building_io;
+    outer Temperature building_temperature;
+
+    equation
+      connect(building_io, i);
+      
+  end BuildingTechnology;
+  
   
   connector SignalPort
     Boolean s(start=false);

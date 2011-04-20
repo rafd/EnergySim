@@ -133,17 +133,6 @@ encapsulated package System
   end CommunityTechnology;
   
   
-  partial model BuildingTechnology
-    extends MultiDevice;
-    
-    outer MultiPort building_io;
-    outer Temperature building_temperature;
-
-    equation
-      connect(building_io, i);
-      
-  end BuildingTechnology;
-  
   
 
 end System;

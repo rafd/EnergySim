@@ -5,7 +5,7 @@ encapsulated package Thermal
   
   
   model Walls
-    extends System.BuildingTechnology;
+    extends System.BuildingTech.BuildingTechnology;
     extends System.EconomicTechnology(FixedCost=60000);
     
     outer Temperature outside_temperature;
@@ -49,7 +49,7 @@ encapsulated package Thermal
   
 
   model AirConditioner
-    extends System.BuildingTechnology;
+    extends System.BuildingTech.BuildingTechnology;
     extends System.EconomicTechnology(FixedCost=60000);
     extends BuildingTech.ControlledDevice;
 
@@ -61,7 +61,7 @@ encapsulated package Thermal
   
   
   model Heater
-    extends System.BuildingTechnology;
+    extends System.BuildingTech.BuildingTechnology;
     extends System.EconomicTechnology(FixedCost=60000);
     extends BuildingTech.ControlledDevice;
 
