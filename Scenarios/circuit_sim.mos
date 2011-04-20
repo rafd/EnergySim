@@ -1,8 +1,0 @@
-runScript("_sim.mos");
-getErrorString();
-loadFile("circuit.mo");
-getErrorString();
-simulate(Circuit, startTime=0, stopTime=86400, numberOfIntervals=48);
-getErrorString();
-plot({load.V, load.P, load.I});
-getErrorString();

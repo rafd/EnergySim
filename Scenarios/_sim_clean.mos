@@ -1,2 +1,2 @@
-system("rm -rf *.log *.makefile *.exe *.libs *.cpp *.mat *.txt *.c *.h");
+system("rm -rf *.log *.makefile *.exe *.libs *.cpp *.mat *.txt *.c *.h *.pdf *.csv");
 system("find . -not -iname \"*.*\" -delete");
