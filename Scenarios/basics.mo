@@ -189,7 +189,7 @@ encapsulated package EnergySim
       
         der(E) = 1000000*der(building_temperature); //or should this be E=kT?
 
-        der(E) = Q;// + heater_power;
+        der(E) = Q;
         
     
     end ThermalBuilding;
@@ -257,13 +257,14 @@ encapsulated package EnergySim
       extends EnergySim.BuildingTechnology;
       extends EnergySim.EconomicTechnology(FixedCost=60000);
 
-      ThermalPower rated_thermal_power = 1500; //0.025;
+      ThermalPower rated_thermal_power = 1500;
       ElectricPower rated_electric_power = -1500;
+      Cost rated_running_cost = 0.01; //TODO: should be a function of elec. cost
       
       SignalPort control;
     
       equation
-        RunningCost = 0.01;
+        RunningCost = if control.s then rated_running_cost else 0;
         P = if control.s then rated_electric_power else 0;
         Q = if control.s then rated_thermal_power else 0;
     
