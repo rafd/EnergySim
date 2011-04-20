@@ -1,103 +1,149 @@
 within EnergySim;
 
 encapsulated package System
-  import Modelica.SIunits.Temperature;
-
-
-  // ENVIRONMENT
+  "System modeling package"
+  //import Modelica.SIunits.Temperature;
+  import EnergySim.*;
   
-  model Environment
-    //inner ThermalPort env_thermal;
-    //ElectricPort env_electric_in;
-    //ElectricPort env_electric_out;
-
-    //input Real ambient_temperature = 300;
-    //input Real ambient_voltage = 120;
-    //input Real ambient_current = 10;
+  function system_temperature
+    input    Real         time;
+    output   Temperature  result "Outside Temperature in Kelvin";
     
-    //Real output_voltage;
-        
-    //equation
-      //env_thermal.T = ambient_temperature;
-      //env_electric_in.v = ambient_voltage;
-      //env_electric_out.v = output_voltage;
+    Real max_T = 33;
+    Real min_T = -17+5;
+    Real days_to_peak = 189; // July 8
+    
+    Real a = (max_T - min_T) / 2; //magnitude
+    Real b = (Modelica.Constants.pi * 2) / seconds_in_year; //period
+    Real c = days_to_peak * seconds_in_day; //x-offset right
+    Real d = a + min_T; //y-offset up
+    
+    Real x, y;
+    
+    algorithm
+     
+      x := 0.9 * a * cos(b*(time-c)) + d + 273; //daily extremes
+      y := 5 * cos((b*365)*(time-seconds_in_day/2)) - 5; //daily variation of 5 deg
+      result := x + y;
+  end system_temperature;
+  
+  
+  /*
+  *    CONNECTORS
+  */
+  
+  connector ThermalPort
+    flow ElectricPower P;
+  end ThermalPort;
+  
+  
+  connector ElectricPort
+    flow ThermalPower Q;
+  end ElectricPort;
+  
+  
+  connector EconomicPort
+    flow Cost TC "total cost";
+  end EconomicPort;
+  
+  
+  connector MultiPort
+    extends ElectricPort;
+    extends ThermalPort;
+    extends EconomicPort;
+  end MultiPort;
+    
+  
+  /*
+  *    MODELS
+  */
+  
+  partial model MultiDevice
+    MultiPort i;
+    MultiPort o;
+    
+    ElectricPower P "electric power out (produced)";
+    ThermalPower Q "thermal power out (heat produced)";
+    //State S "states s of object";
+    
+    equation
+      P = o.P - i.P;
+      Q = o.Q - i.Q;
+      TotalCost = o.TC - i.TC;
       
-      //env_electric_in.i = ambient_current;
-     // 0 = env_electric_in.i + env_electric_out.i; 
-  
-  end Environment;
-
-  encapsulated package Grid
-
-    function electricity_demand
-
-    end electricity_demand;
-
-  end Grid;
-
-
-  encapsulated package Region
-    import Modelica.SIunits.Temperature;
+      //S = i.S;
+      //o.S = i.S;       
     
-    function temperature_outside
-      input    Real         time;
-      output   Temperature  result "Outside Temperature in Kelvin";
+  end MultiDevice;
+  
+  
+  model System
+    extends MultiDevice;
 
-      algorithm
-        result := -28 * cos(Modelica.Constants.pi / 6 * (time - 1)) - 5 + 273;
-    end temperature_outside;
-
-  end Region;
-
-  function temperature_delta
-
-    input  Real         time;
-    output Temperature  result;
+    MultiPort ground;
+    
+    Temperature temperature;
+    
+    Cost TotalCost;
+      
+    equation
+      connect(i, ground);
+      //ground.S = 0;
 
     algorithm
-      result := Occupants.preferred_temperature(Region.temperature_outside(time)) - Region.temperature_outside(time);
+      temperature := EnergySim.System.system_temperature(time);
+      
+    
+  end System;
 
-  end temperature_delta;
+
+  model Community
+    extends MultiDevice;
+    
+    Cost TotalCost;
+    
+    inner MultiPort community_io;
+    
+    equation
+      connect(i, community_io);
+      connect(i, o);
+    
+  end Community;
 
 
-  //"Condition: Time = "month, i.e time=12 means 12 months"
-  //"Assumption: Annual temperature variation based on sinusoidal wave functions, ignore fluctuation within one month"
-  //"Assumption: Heating efficiency is 40%"
+  partial model EconomicTechnology
+    parameter Real FixedCost;
+    
+    Cost RunningCost;
+    Cost TotalCost(start=FixedCost,fixed=true);
+    
+    equation
+      der(TotalCost) = RunningCost;
+  end EconomicTechnology;
 
-  model Dwelling "generic dwelling model"
+  
+  partial model CommunityTechnology
+    extends MultiDevice;
+    
+    outer MultiPort community_io;
+    
+    equation
+      connect(community_io, i);
+  
+  end CommunityTechnology;
+  
+  
+  partial model BuildingTechnology
+    extends MultiDevice;
+    
+    outer MultiPort building_io;
+    outer Temperature building_temperature;
 
-    parameter Real BuildingSurfaceArea  = 400     "Building Surface Area in m^2";
-    parameter Real PercentageWindow     = 0.1		  "Percentage of window on building surface";
-    parameter Real HeightOfFloor        = 2		    "Height of Floor in m";
-    parameter Real WallThickness        = 0.3		  "WallThickness in m";
-    parameter Real HeatingEfficiency    = 0.4	    "Heating Effciency";
-    parameter Real GasEnergy            = 37.5		"Natural Gas Energy Content when combusted MJ/m^3";
-    parameter Real UWall                = 0.29		"U factor for walls";
-    parameter Real UWindow              = 0.18	  "U factor for windows";
-    parameter Real InsWallThickness     = 0.1	    "wallthickness added by insulation";		
-    parameter Real GasPrice             = 0.1542	"Gas Price $/m^3";
-	
-    Real SpaceReq     = (InsWallThickness * BuildingSurfaceArea) / HeightOfFloor  "Space Required for Heating";
-    Real HeatCapReq   "Instantanoues Heating Capacity Required in Joule";
-    Real HeatCapTot   "Accumulated Heating load in MJoule since t=0";		
-
-    Real HeatCost       "Instantanous Heating Cost in $";
-    Real AccuHeatCost	  "Accumulated Heating Cost since t=0";
-    Real OutsideTempC	  "Outside Temperature in Celcius";	
-
-    equation 
-
-      HeatCapReq = 	UWall * BuildingSurfaceArea * (1 - PercentageWindow) * temperature_delta(time) + 
-    		UWindow * BuildingSurfaceArea * PercentageWindow * temperature_delta(time);
-			
-      der(HeatCapTot) = HeatCapReq * 24*60*60*30 / 1000000;	
-				
-      AccuHeatCost = (HeatCapTot / GasEnergy * GasPrice) / HeatingEfficiency;
-
-      HeatCost = der(AccuHeatCost);
-
-      OutsideTempC=Region.temperature_outside(time)-273;
-
-  end Dwelling;
+    equation
+      connect(building_io, i);
+      
+  end BuildingTechnology;
+  
+  
 
 end System;
