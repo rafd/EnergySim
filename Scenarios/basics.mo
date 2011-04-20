@@ -187,7 +187,7 @@ encapsulated package EnergySim
         
       equation
       
-        der(E) = 100*der(building_temperature); //or should this be E=kT?
+        der(E) = 1000000*der(building_temperature); //or should this be E=kT?
 
         der(E) = Q;// + heater_power;
         
@@ -216,7 +216,7 @@ encapsulated package EnergySim
       outer Temperature outside_temperature;
     
       equation
-        Q =  0.001*(outside_temperature - building_temperature);
+        Q = 30*(outside_temperature - building_temperature);
         RunningCost = 0;
         P = 0;
     
@@ -234,7 +234,7 @@ encapsulated package EnergySim
       outer Temperature building_temperature;
     
       equation
-        when {building_temperature < 20+273, building_temperature > 25+273} then
+        when {building_temperature < 20+273, building_temperature > 22+273} then
           heater_on.s = building_temperature < 20+273;
         end when;
     
@@ -257,7 +257,7 @@ encapsulated package EnergySim
       extends EnergySim.BuildingTechnology;
       extends EnergySim.EconomicTechnology(FixedCost=60000);
 
-      ThermalPower rated_thermal_power = 0.025;
+      ThermalPower rated_thermal_power = 1500; //0.025;
       ElectricPower rated_electric_power = -1500;
       
       SignalPort control;
