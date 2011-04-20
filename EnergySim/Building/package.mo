@@ -22,7 +22,7 @@ encapsulated package Building
   
   
   partial model GeometricBuilding
-  
+    //area, wall_thickness, volume
   
   end GeometricBuilding;
   
@@ -31,6 +31,15 @@ encapsulated package Building
     inner Temperature building_temperature(start=273+21) "Temp, in Kelvin";
     
     ThermalEnergy E;
+    
+    /*
+    constant Real air_heat_capacity = 1.297
+    Real C_p = 1.012;
+    Real Side = 20.0;
+    Real M = Side^3 * 1.294;
+    Real ConvCoeff = 5;
+    Real SurfaceArea = Side^2*5;
+    */
     
     initial equation
       E = 1*building_temperature;
