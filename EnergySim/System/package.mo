@@ -53,19 +53,17 @@ encapsulated package System
       out := inp * 0.5 * 360/Modelica.Constants.pi;
   end degrees;
 
+
   function system_solar_insolation
      
     input Real time;
+    input Real CollectorTiltAngle;
+    input Real CollectorAzimuthAngle;
 
     parameter Real Longitude = 79.62 "longitude of location";
     parameter Real Latitude = 43.58 "latitude of location";
     parameter Real Reflectivity = 0 "reflectivity around the subject of interest, 0.8 for snow, 0.2 for grass";
-    
-    parameter Real CollectorTiltAngle = 39;
-    parameter Real CollectorAzimuthAngle = 0;
 
-    constant Real DegreeToRad = 2 * Modelica.Constants.pi/360 "the degree to rad conversion factor";
-    constant Real RadToDegree = DegreeToRad / 1;
     constant Real STML = 75 "Standard Time Meridian Longitude";
     constant Real SkyDiffusivityFactor = 0.058;
     constant Real ClearnessNumber = 1 "clouds?";
@@ -91,9 +89,8 @@ encapsulated package System
     Real BeamRadiation;
     Real DiffuseRadiation;
     Real ReflectedRadiation;
-    Real TotalRadiation;
-
-    output Real result;
+    
+    output Real TotalRadiation; // W/m2
 
     algorithm
        LST       := mod(time,86400)/60;
@@ -105,7 +102,7 @@ encapsulated package System
        SolarDeclination   := 23.45 * sin(radians(360*(284+DayOfYear)/365));
        SolarAltitudeAngle := degrees(asin(sin(radians(Latitude))*sin(radians(SolarDeclination))+cos(radians(Latitude))*cos(radians(SolarDeclination))*cos(radians(HourAngle)))); 
        SolarAzimuthAngle  := degrees(asin(cos(radians(SolarDeclination))*sin(radians(HourAngle))/cos(radians(SolarAltitudeAngle))));
-       DynamicSolarInsolation := 1353*(1+0.034*cos(360*DayOfYear/365.25*DegreeToRad));
+       DynamicSolarInsolation := 1353*(1+0.034*cos(radians(360*DayOfYear/365.25)));
        IncidentAngle := degrees( acos( cos(radians(SolarAltitudeAngle)) * cos(radians(SolarAzimuthAngle-CollectorAzimuthAngle)) * sin(radians(CollectorTiltAngle)) + sin(radians(SolarAltitudeAngle)) * cos(radians(CollectorTiltAngle)) ) );
        
        NormalBeamRadiation := if SolarAltitudeAngle < 0 then 0 else ClearnessNumber*DynamicSolarInsolation*exp(-OpticalDepth/sin(radians(SolarAltitudeAngle)));
@@ -114,8 +111,7 @@ encapsulated package System
        DiffuseRadiation := SkyDiffusivityFactor * NormalBeamRadiation * abs((1+cos(radians(CollectorTiltAngle)))/2);
        ReflectedRadiation := Reflectivity * HorizontalRadiation * abs((1-cos(radians(CollectorTiltAngle)))/2);
        TotalRadiation := BeamRadiation + DiffuseRadiation + ReflectedRadiation;
-       
-       result := TotalRadiation;
+      
       
   end system_solar_insolation;
   
