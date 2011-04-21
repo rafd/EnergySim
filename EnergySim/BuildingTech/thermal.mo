@@ -9,13 +9,52 @@ encapsulated package Thermal
     extends System.EconomicTechnology(FixedCost=60000);
     
     outer Temperature outside_temperature;
+    
+    Real SurfaceArea = 200; //200-540 m2
+    Real R_value = 4; //0.17 - 2000
   
     equation
-      Q = 30*(outside_temperature - building_temperature);
+      Q = (SurfaceArea/R_value)*(outside_temperature - building_temperature);
       RunningCost = 0;
       P = 0;
   
   end Walls;
+  
+  
+  model Windows
+    extends System.BuildingTech.BuildingTechnology;
+    extends System.EconomicTechnology(FixedCost=60000);
+  
+    outer Temperature outside_temperature;
+    
+    Real SurfaceArea = 20; //20-54 m2, 10% of surface area of house
+    Real R_value = 2; //0.3 - 6
+    
+    equation
+      Q = (SurfaceArea/R_value)*(outside_temperature - building_temperature);
+      RunningCost = 0;
+      P = 0;
+  end Windows;
+  
+  
+  model Leaks
+    extends System.BuildingTech.BuildingTechnology;
+    extends System.EconomicTechnology(FixedCost=60000);
+  
+    outer Temperature outside_temperature;
+    /*
+    Real LeakArea;
+    Real AirDensity;
+    Real PressureDifferenceStack;
+    Real PressureDifferenceWind;
+    
+    Real AirFlow;
+    */
+    equation
+      Q = -49000;
+      RunningCost = 0;
+      P = 0;
+  end Leaks;
 
 
 
@@ -44,7 +83,7 @@ encapsulated package Thermal
     
     Temperature summer_target = 23;
     Temperature winter_target = 21;
-    Temperature sensitivity = 0.5;
+    Temperature sensitivity = 2;
   
     equation
       // AC
@@ -83,8 +122,8 @@ encapsulated package Thermal
     extends System.EconomicTechnology(FixedCost=60000);
     extends BuildingTech.ControlledDevice;
 
-    ThermalPower rated_thermal_power = 1500;
-    ElectricPower rated_electric_power = -1500;
+    ThermalPower rated_thermal_power = 55000;
+    ElectricPower rated_electric_power = -5100;
     Cost rated_running_cost = 0.01; //TODO: should be a function of elec. cost
       
   end Heater;

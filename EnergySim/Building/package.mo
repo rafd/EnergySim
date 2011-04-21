@@ -30,7 +30,7 @@ encapsulated package Building
   partial model ThermalBuilding
     inner Temperature building_temperature(start=273+21) "Temp, in Kelvin";
     
-    ThermalEnergy E;
+    ThermalEnergy E(start=1000, fixed=true);
     
     /*
     constant Real air_heat_capacity = 1.297
@@ -40,13 +40,16 @@ encapsulated package Building
     Real ConvCoeff = 5;
     Real SurfaceArea = Side^2*5;
     */
+    Real BuildingVolume = 200; // 120 - 900
+    Real AirHeatCapacity = 1005;
+    Real AirDensity = 1.2;
     
     initial equation
-      E = 1*building_temperature;
+      //E = 1*building_temperature;
       
     equation
     
-      der(E) = 1000000*der(building_temperature); //or should this be E=kT?
+      der(E) = AirDensity*AirHeatCapacity*BuildingVolume*100*der(building_temperature); //or should this be E=kT?
 
       der(E) = Q; // Q is summative heat flow from building technologies
       
@@ -57,6 +60,8 @@ encapsulated package Building
   partial model ThermalTechBuilding
     
     BuildingTech.Thermal.Walls walls;
+    BuildingTech.Thermal.Windows windows;
+    BuildingTech.Thermal.Leaks leaks;
     BuildingTech.Thermal.Heater heater;
     BuildingTech.Thermal.AirConditioner ac;
     BuildingTech.Thermal.Thermostat thermostat;
