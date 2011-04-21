@@ -1,0 +1,26 @@
+runScript("_sim.mos");
+getErrorString();
+
+loadFile("test_insolation.mo");
+getErrorString();
+
+// checkModel(Test);
+
+// 1 hour = 3600        NOI= 2
+// 1 day = 86400        NOI= 48
+// 1 week = 604800      NOI= 336
+// 1 year = 31536000    NOI= 17520
+// minimum numberOfIntervals = 2 * seconds_of_simulation / 3600
+
+//all year
+simulate(Test, startTime=0, stopTime=31536000, numberOfIntervals=17520, outputFormat="csv");
+
+//winter day
+//simulate(Test, startTime=0, stopTime=86400, numberOfIntervals=192, outputFormat="csv");
+
+//summer day
+//simulate(Test, startTime=604800*26, stopTime=604800*26+86400, numberOfIntervals=48, outputFormat="csv");
+
+getErrorString();
+
+//system("R < test_insolation.R --no-save");

@@ -29,6 +29,98 @@ encapsulated package System
   
   
   /*
+   * Model for describing solar influx of the region of the region
+   * Input: Local standard time, Longitude/Latitude of the location
+   * Output: DynamicSolarInsulation W/m^2
+   * Default data are from Annex
+   * Created by Kun Xie 2010/03/07
+   */
+
+
+  function radians
+    input Real inp;
+    output Real out;
+     
+    algorithm
+      out := inp * 2 * Modelica.Constants.pi/360;
+  end radians;
+   
+  function degrees
+    input Real inp;
+    output Real out;
+    
+    algorithm
+      out := inp * 0.5 * 360/Modelica.Constants.pi;
+  end degrees;
+
+  function system_solar_insolation
+     
+    input Real time;
+
+    parameter Real Longitude = 79.62 "longitude of location";
+    parameter Real Latitude = 43.58 "latitude of location";
+    parameter Real Reflectivity = 0 "reflectivity around the subject of interest, 0.8 for snow, 0.2 for grass";
+    
+    parameter Real CollectorTiltAngle = 39;
+    parameter Real CollectorAzimuthAngle = 0;
+
+    constant Real DegreeToRad = 2 * Modelica.Constants.pi/360 "the degree to rad conversion factor";
+    constant Real RadToDegree = DegreeToRad / 1;
+    constant Real STML = 75 "Standard Time Meridian Longitude";
+    constant Real SkyDiffusivityFactor = 0.058;
+    constant Real ClearnessNumber = 1 "clouds?";
+
+    parameter Real OpticalDepth = 0.144 "local optical depth"; //NOT A PARAM, SHOULD BE A LOOKUP
+    parameter Real SkyDiffuseFactor = 0.06 "radiation factors diffused from sky"; //NOT A PARAM, SHOULD BE A LOOKUP
+
+    Real DayOfYear;
+
+    Real LST;
+    Real B "intermediate variable for calculation, unit Rad";
+    Real ET "intermediate variable for calculation, unit Min";
+    Real SolarTime "time of the day that solar influx existed, unit Min";
+    Real HourAngle;
+    Real SolarDeclination;
+    Real SolarAltitudeAngle;
+    Real SolarAzimuthAngle;
+    Real DynamicSolarInsolation;
+    Real IncidentAngle;
+    
+    Real NormalBeamRadiation;
+    Real HorizontalRadiation;
+    Real BeamRadiation;
+    Real DiffuseRadiation;
+    Real ReflectedRadiation;
+    Real TotalRadiation;
+
+    output Real result;
+
+    algorithm
+       LST       := mod(time,86400)/60;
+       DayOfYear := Time.day_of_year(time)+1;
+       B          := 360*(DayOfYear-81)/364;
+       ET         := 9.87 * sin(2*radians(B)) - 7.53 * cos(radians(B)) - 1.55 * sin(radians(B));
+       SolarTime  := LST+ET+(STML-Longitude)*4;
+       HourAngle  := (SolarTime-12*60)/4;
+       SolarDeclination   := 23.45 * sin(radians(360*(284+DayOfYear)/365));
+       SolarAltitudeAngle := degrees(asin(sin(radians(Latitude))*sin(radians(SolarDeclination))+cos(radians(Latitude))*cos(radians(SolarDeclination))*cos(radians(HourAngle)))); 
+       SolarAzimuthAngle  := degrees(asin(cos(radians(SolarDeclination))*sin(radians(HourAngle))/cos(radians(SolarAltitudeAngle))));
+       DynamicSolarInsolation := 1353*(1+0.034*cos(360*DayOfYear/365.25*DegreeToRad));
+       IncidentAngle := degrees( acos( cos(radians(SolarAltitudeAngle)) * cos(radians(SolarAzimuthAngle-CollectorAzimuthAngle)) * sin(radians(CollectorTiltAngle)) + sin(radians(SolarAltitudeAngle)) * cos(radians(CollectorTiltAngle)) ) );
+       
+       NormalBeamRadiation := if SolarAltitudeAngle < 0 then 0 else ClearnessNumber*DynamicSolarInsolation*exp(-OpticalDepth/sin(radians(SolarAltitudeAngle)));
+       HorizontalRadiation := (SkyDiffusivityFactor+sin(radians(SolarAltitudeAngle)))*NormalBeamRadiation;
+       BeamRadiation := if IncidentAngle > 90 then 0 else NormalBeamRadiation * cos(radians(IncidentAngle));     
+       DiffuseRadiation := SkyDiffusivityFactor * NormalBeamRadiation * abs((1+cos(radians(CollectorTiltAngle)))/2);
+       ReflectedRadiation := Reflectivity * HorizontalRadiation * abs((1-cos(radians(CollectorTiltAngle)))/2);
+       TotalRadiation := BeamRadiation + DiffuseRadiation + ReflectedRadiation;
+       
+       result := TotalRadiation;
+      
+  end system_solar_insolation;
+  
+  
+  /*
   *    CONNECTORS
   */
   
@@ -51,8 +143,7 @@ encapsulated package System
     extends ElectricPort;
     extends ThermalPort;
     extends EconomicPort;
-  end MultiPort;
-    
+  end MultiPort;    
   
   /*
   *    MODELS
@@ -81,20 +172,19 @@ encapsulated package System
     extends MultiDevice;
 
     MultiPort ground;
-    
+  
     Temperature temperature;
-    
+   
     Cost TotalCost;
-      
+     
     equation
       connect(i, ground);
       //ground.S = 0;
 
     algorithm
       temperature := EnergySim.System.system_temperature(time);
-      
-    
-  end System;
+
+  end System;  
 
 
   model Community
