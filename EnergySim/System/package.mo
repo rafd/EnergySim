@@ -116,6 +116,20 @@ encapsulated package System
   end system_solar_insolation;
   
   
+  
+  function ghg_calculator
+    input Real time;
+    input ElectricPower P_electricity;
+    input NaturalGasPower P_natural_gas;
+    
+    output GHGRate ghg_rate;
+    
+    algorithm
+    
+      ghg_rate := 0;
+  
+  end ghg_calculator;
+  
   /*
   *    CONNECTORS
   */
@@ -164,7 +178,6 @@ encapsulated package System
     ElectricPower P "electric power out (produced)";
     ThermalPower Q "thermal power out (heat produced)";
     NaturalGasPower NG "";
-    GHGRate GHG "";
     
     //State S "states s of object";
     
@@ -191,6 +204,7 @@ encapsulated package System
     Temperature temperature;
    
     Cost TotalCost;
+    GHGRate GHG;
      
     equation
       connect(i, ground);
@@ -206,6 +220,7 @@ encapsulated package System
     extends MultiDevice;
     
     Cost TotalCost;
+    GHGRate GHG;
     
     inner MultiPort community_io;
     
@@ -225,6 +240,14 @@ encapsulated package System
     equation
       der(TotalCost) = RunningCost;
   end EconomicTechnology;
+  
+  
+  partial model GHGTechnology
+    GHGRate GHG "";
+    
+    equation
+      GHG = EnergySim.System.ghg_calculator(time, P, NG);
+  end GHGTechnology;
 
   
   partial model CommunityTechnology

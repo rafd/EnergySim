@@ -14,7 +14,6 @@ encapsulated package Thermal
       Q = 30*(outside_temperature - building_temperature);
       RunningCost = 0;
       P = 0;
-      GHG = 0;
       NG = 0;
   
   end Walls;
@@ -78,9 +77,6 @@ encapsulated package Thermal
     NaturalGasPower rated_natural_gas_power = 0;
     Cost rated_running_cost = 0.01; //TODO: should be a function of elec. cost
     
-    equation
-      GHG = 0;
-    
   end AirConditioner;
   
   
@@ -93,9 +89,6 @@ encapsulated package Thermal
     ElectricPower rated_electric_power = 0;
     NaturalGasPower rated_natural_gas_power = -1500;
     Cost rated_running_cost = 0.01; //TODO: should be a function of elec. cost
-    
-    equation
-      GHG = 0;
       
   end Heater;
   

@@ -6,6 +6,7 @@ encapsulated package BuildingTech
   
   partial model BuildingTechnology
     extends System.MultiDevice;
+    extends System.GHGTechnology;
     
     outer System.MultiPort building_io;
     outer Temperature building_temperature;
@@ -32,6 +33,5 @@ encapsulated package BuildingTech
       Q = if control.s then rated_thermal_power else 0;
   
   end ControlledDevice;
-  
   
 end BuildingTech;
