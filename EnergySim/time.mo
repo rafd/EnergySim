@@ -10,6 +10,7 @@ encapsulated package Time // NOTE: NOT TESTED
       hour := floor(mod(s, 86400) / 3600);
   end hour_of_day;
 
+
   function day_of_year
     input Real s "second value, since year start";
     output Real day "day, since year start";
@@ -18,6 +19,7 @@ encapsulated package Time // NOTE: NOT TESTED
       day := floor(s / 86400);
   end day_of_year;
 
+
   function week_of_year
     input Real s "second value, since year start";
     output Real week "week, since year start";
@@ -25,5 +27,28 @@ encapsulated package Time // NOTE: NOT TESTED
     algorithm
       week := floor( s / (86400 * 7));
   end week_of_year;
+  
+  
+  function weekday?
+  
+  end weekday?;
+  
+  
+  function weekend?
+  
+  end weekend?;
+  
+  
+  function month_of_year
+    //86400
+    dpm = [31, 28, 31, 30,  31,  30,  31,  31,  30,  31,  30, 31];
+    dpp = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    
+    algorithm
+      for 1:12 as x
+        if time > dpp[x]*86400 return x;
+        end
+        
+  end month_of_year;
 
 end Time;

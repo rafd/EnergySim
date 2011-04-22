@@ -5,6 +5,13 @@ encapsulated package System
   //import Modelica.SIunits.Temperature;
   import EnergySim.*;
   
+  function electricity_price
+    input Real time;
+    output Cost price "$/kwH";
+  
+    
+  end electricity_price;
+  
   function system_temperature
     input    Real         time;
     output   Temperature  result "Outside Temperature in Kelvin";
