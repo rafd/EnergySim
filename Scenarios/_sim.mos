@@ -1,3 +1,4 @@
 loadModel(Modelica.Constants);
 loadModel(Modelica.SIUnits);
+loadModel(Modelica.Blocks);
 loadModel(EnergySim);
