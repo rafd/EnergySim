@@ -135,10 +135,22 @@ encapsulated package System
   end EconomicPort;
   
   
+  connector NaturalGasPort
+    flow NaturalGasPower NG;
+  end NaturalGasPort;
+  
+  
+  connector GHGPort
+    flow GHGRate GHG;
+  end GHGPort;
+  
+  
   connector MultiPort
     extends ElectricPort;
     extends ThermalPort;
     extends EconomicPort;
+    extends NaturalGasPort;
+    extends GHGPort;
   end MultiPort;    
   
   /*
@@ -151,12 +163,19 @@ encapsulated package System
     
     ElectricPower P "electric power out (produced)";
     ThermalPower Q "thermal power out (heat produced)";
+    NaturalGasPower NG "";
+    GHGRate GHG "";
+    
     //State S "states s of object";
     
     equation
       P = o.P - i.P;
       Q = o.Q - i.Q;
-      TotalCost = o.TC - i.TC;
+      
+      NG = o.NG - i.NG;
+      GHG = o.GHG - i.GHG;
+      
+      TotalCost = o.TC - i.TC; //cost is a special case for now, due to the accumulator
       
       //S = i.S;
       //o.S = i.S;       
