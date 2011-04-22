@@ -29,25 +29,31 @@ encapsulated package Time // NOTE: NOT TESTED
   end week_of_year;
   
   
-  function weekday?
+  function is_weekday
   
-  end weekday?;
+  end is_weekday;
   
   
-  function weekend?
+  function is_weekend
   
-  end weekend?;
+  end is_weekend;
   
   
   function month_of_year
     //86400
-    dpm = [31, 28, 31, 30,  31,  30,  31,  31,  30,  31,  30, 31];
-    dpp = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    input Real time;
+    output Integer month;
+    //dpm = [31, 28, 31, 30,  31,  30,  31,  31,  30,  31,  30, 31];
+    Integer[12] dpp = {31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365};
     
     algorithm
-      for 1:12 as x
-        if time > dpp[x]*86400 return x;
-        end
+      month := 1;
+      for i in 1:12 loop
+        if time < dpp[i]*86400 then
+          month := i;
+          break;
+        end if;
+      end for;  
         
   end month_of_year;
 

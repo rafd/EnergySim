@@ -9,7 +9,8 @@ encapsulated package System
     input Real time;
     output Cost price "$/kwH";
   
-    
+    algorithm
+      price := EnergySim.Time.month_of_year(time);
   end electricity_price;
   
   function system_temperature
