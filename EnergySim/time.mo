@@ -33,7 +33,7 @@ encapsulated package Time // NOTE: NOT TESTED
     input Real time;
     output Real day;
     
-    Integer first_day_of_year = 3; //1 = monday, 7 = sunday
+    Integer first_day_of_year = 5; //1 = monday, 7 = sunday
     
     algorithm
       day := mod(floor(mod(time/86400, 7)) + first_day_of_year - 1, 7) + 1;
