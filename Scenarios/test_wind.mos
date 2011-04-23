@@ -10,6 +10,6 @@ simulate(Test, startTime=0, stopTime=365*86400);
 
 getErrorString();
 
-plot({com.bdg.WT.WindSpeed});
+plot({com.bdg.WT.WindEnergy});
 
 getErrorString();
