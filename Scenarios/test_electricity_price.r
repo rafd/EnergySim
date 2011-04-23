@@ -1,4 +1,8 @@
 
 data <- read.csv("~/Code/EnergySim/Scenarios/Test_res.csv", sep=",", head=TRUE)
 
-plot(data$time, data$com.bdg.building_temperature-273, type="l", ylim=c(-25,30))
+#winter
+plot(data$time, data$price, xlim=c(86400*7*0, 86400*7*1), type="s")
+
+#summer
+points(data$time - 86400*7*30, data$price, xlim=c(86400*7*30, 86400*7*31), type="s", col=3)
