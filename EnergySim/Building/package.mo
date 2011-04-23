@@ -70,7 +70,7 @@ encapsulated package Building
   
   partial model WindTechBuilding
     
-    //BuidldingTech.Wind.WindTurbine WT;
+    BuildingTech.Wind.WindTurbine WT;
     
   equation
     

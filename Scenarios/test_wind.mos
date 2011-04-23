@@ -1,0 +1,15 @@
+runScript("_sim.mos");
+getErrorString();
+
+loadModel(Modelica.Blocks);
+loadFile("test_wind.mo");
+getErrorString();
+
+simulate(Test, startTime=0, stopTime=365*86400);
+//simulate(Test, startTime=0, stopTime=10.73);
+
+getErrorString();
+
+plot({com.bdg.WT.WindSpeed});
+
+getErrorString();
