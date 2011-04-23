@@ -132,6 +132,35 @@ encapsulated package System
   
   end CommunityTechnology;
   
+  model getData
+    
+    import Modelica.Blocks.Sources;
+    import Modelica.Blocks.Tables;
+    Tables.CombiTable1Ds Climate(tableOnFile = true, tableName = "Climate", fileName = "Climate2010.txt",columns=2:11);
+    Tables.CombiTable1Ds Demand(tableOnFile = true, tableName = "Demand", fileName = "ElectricityDemand.txt",columns=2:4);
+    
+    
+    Real Month =Climate.y[1] "Month of the year";
+    Real Day=Climate.y[2] "Day of the month";
+    Real T=Climate.y[3] "temperature in C";
+    Real DT=Climate.y[4] "Dew Point Temperature in C";
+    Real RH=Climate.y[5] "relative Humidity in %";
+    Real D=10*Climate.y[6] "wind direction in degree";
+    Real V=Climate.y[7]"wind speed in km/h";
+    Real Visibiliy=Climate.y[8]"Visibiliy in km";
+    Real Patm =Climate.y[9]"Standard Pressure in kPa";
+    Real WC=Climate.y[10] "WindChill";
+    
+    Real TotalDemand=Demand.y[1]"total demand";
+    Real ONDemand=Demand.y[2]"Ontario Demand";
+    Real PredictDemand=Demand.y[3]"Predicted demand for this hour";
+    
+  equation 
+    Climate.u=time/60/60;
+    Demand.u=time/60/60;
+    
+    
+  end getData;
   
   
 

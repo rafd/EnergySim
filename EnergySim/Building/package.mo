@@ -10,6 +10,7 @@ encapsulated package Building
     extends System.CommunityTechnology;
     extends ThermalBuilding;
     extends ThermalTechBuilding;
+    extends WindTechBuilding;
 
     inner System.MultiPort building_io;
 
@@ -30,7 +31,7 @@ encapsulated package Building
   partial model ThermalBuilding
     inner Temperature building_temperature(start=273+21) "Temp, in Kelvin";
     
-    ThermalEnergy E;
+    ThermalEnergy E(start=0);
     
     /*
     constant Real air_heat_capacity = 1.297
@@ -42,7 +43,7 @@ encapsulated package Building
     */
     
     initial equation
-      E = 1*building_temperature;
+      //E = 1*building_temperature;
       
     equation
     
@@ -66,5 +67,13 @@ encapsulated package Building
       connect(ac.control, thermostat.ac_on);
   
   end ThermalTechBuilding;
+  
+  partial model WindTechBuilding
+    
+    //BuidldingTech.Wind.WindTurbine WT;
+    
+  equation
+    
+  end WindTechBuilding;
   
 end Building;

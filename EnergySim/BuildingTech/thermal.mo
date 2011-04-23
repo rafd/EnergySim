@@ -11,7 +11,7 @@ encapsulated package Thermal
     outer Temperature outside_temperature;
   
     equation
-      Q = 30*(outside_temperature - building_temperature);
+      Q = 5.7*(outside_temperature - building_temperature);
       RunningCost = 0;
       P = 0;
   

@@ -16,11 +16,11 @@ getErrorString();
 //simulate(Test, startTime=0, stopTime=31536000, numberOfIntervals=17520, outputFormat="csv");
 
 //winter day
-simulate(Test, startTime=0, stopTime=86400, numberOfIntervals=192, outputFormat="csv");
+simulate(Test, startTime=0, stopTime=86400, numberOfIntervals=192,outputFormat="plt");
 
 //summer day
 //simulate(Test, startTime=604800*26, stopTime=604800*26+86400, numberOfIntervals=48, outputFormat="csv");
 
 getErrorString();
 
-//system("R < test_thermal.R --no-save");
+//plot({com.bdg.walls.Q, outside_temperature, com.bdg.building_temperature});
