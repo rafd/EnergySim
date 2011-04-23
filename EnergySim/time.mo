@@ -29,14 +29,15 @@ encapsulated package Time // NOTE: NOT TESTED
   end week_of_year;
   
   
-  function is_weekday
-  
-  end is_weekday;
-  
-  
-  function is_weekend
-  
-  end is_weekend;
+  function day_of_week
+    input Real time;
+    output Real day;
+    
+    Integer first_day_of_year = 3; //1 = monday, 7 = sunday
+    
+    algorithm
+      day := mod(floor(mod(time/86400, 7)) + first_day_of_year - 1, 7) + 1;
+  end day_of_week;
   
   
   function month_of_year
