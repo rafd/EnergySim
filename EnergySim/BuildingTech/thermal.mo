@@ -15,7 +15,6 @@ encapsulated package Thermal
   
     equation
       Q = (SurfaceArea/R_value)*(outside_temperature - building_temperature);
-      RunningCost = 0;
       P = 0;
       NG = 0;
   
@@ -33,8 +32,8 @@ encapsulated package Thermal
     
     equation
       Q = (SurfaceArea/R_value)*(outside_temperature - building_temperature);
-      RunningCost = 0;
       P = 0;
+      NG = 0;
   end Windows;
   
   
@@ -53,8 +52,8 @@ encapsulated package Thermal
     */
     equation
       Q = -49000;
-      RunningCost = 0;
       P = 0;
+      NG = 0;
   end Leaks;
 
 
@@ -114,8 +113,7 @@ encapsulated package Thermal
     ThermalPower rated_thermal_power = -1000;
     ElectricPower rated_electric_power = -1500;
     NaturalGasPower rated_natural_gas_power = 0;
-    Cost rated_running_cost = 0.01; //TODO: should be a function of elec. cost
-    
+  
   end AirConditioner;
   
   
@@ -127,8 +125,6 @@ encapsulated package Thermal
     ThermalPower rated_thermal_power = 1500;
     ElectricPower rated_electric_power = 0;
     NaturalGasPower rated_natural_gas_power = -1500;
-    Cost rated_running_cost = 0.01; //TODO: should be a function of elec. cost
-      
   end Heater;
   
   

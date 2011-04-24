@@ -5,6 +5,17 @@ encapsulated package System
 
   import EnergySim.*;
   
+  function fit_electricity_price
+    output Real price = 0 "$/kWh";
+    
+  end fit_electricity_price;
+  
+  function natural_gas_price
+    input Real time;
+    output Real price = 0 "$/kWh";
+    
+  end natural_gas_price;
+  
   function electricity_price
     input Real time;
     output Cost price "$/kwH";
@@ -284,8 +295,17 @@ encapsulated package System
     Cost RunningCost;
     Cost TotalCost(start=FixedCost,fixed=true);
     
+    protected
+      Cost power_cost;
+      Cost nat_gas_cost;
+    
     equation
+      power_cost = if P < 0 then EnergySim.System.electricity_price(time) * P else EnergySim.System.fit_electricity_price() * P;
+      nat_gas_cost = EnergySim.System.natural_gas_price(time) * NG;
+      
       der(TotalCost) = RunningCost;
+      
+      RunningCost = power_cost + nat_gas_cost;
   end EconomicTechnology;
   
   

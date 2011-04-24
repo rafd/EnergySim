@@ -16,7 +16,6 @@ encapsulated package Solar
   
     equation
       Q = 0;
-      RunningCost = 0;
       P = panel_efficiency*inverter_efficiency*size*EnergySim.System.system_solar_insolation(time, tilt_angle, azimuth_angle);
       GHG = 0;
       NG = 0;
