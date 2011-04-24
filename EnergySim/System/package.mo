@@ -6,13 +6,35 @@ encapsulated package System
   import EnergySim.*;
   
   function fit_electricity_price
+    //src: http://microfit.powerauthority.on.ca/pdf/microFIT-Program-price-schedule.pdf
     output Real price = 0 "$/kWh";
+    
+   /*
+    < 10kw
+    solar_roof = 80.2
+    solar_pv = 64.2
+    wind = 13.5
+    water_power = 13.1
+    biomass = 13.8
+    biogas = 16.0
+    landfill gas = 11.1
+   */
+    
     
   end fit_electricity_price;
   
   function natural_gas_price
+    //src: https://www1.directenergy.com/ONProgramDocs/ONGR1531pc-gas-enbridge-ABC-res_20110101_20110331.pdf
     input Real time;
-    output Real price = 0 "$/kWh";
+    output Real price "$/kWh";
+    
+    Real gas_supply = 0.118127 "$/m3";
+    Real transportation = 0.058348 "$/m3";
+    
+    Real joules_per_m3 = 39e6 "J/m3";
+    
+    algorithm
+      price := (gas_supply + transportation)/joules_per_m3; // $ / J;
     
   end natural_gas_price;
   
