@@ -6,6 +6,7 @@ encapsulated package BuildingTech
   
   partial model BuildingTechnology
     extends System.MultiDevice;
+    extends System.GHGTechnology;
     
     outer System.MultiPort building_io;
     outer Temperature building_temperature;
@@ -28,9 +29,9 @@ encapsulated package BuildingTech
     equation
       RunningCost = if control.s then rated_running_cost else 0;
       P = if control.s then rated_electric_power else 0;
+      NG = if control.s then rated_natural_gas_power else 0;
       Q = if control.s then rated_thermal_power else 0;
   
   end ControlledDevice;
-  
   
 end BuildingTech;

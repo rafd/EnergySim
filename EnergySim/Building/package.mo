@@ -14,6 +14,7 @@ encapsulated package Building
     inner System.MultiPort building_io;
 
     Cost TotalCost;
+    GHGRate GHG;
 
     equation
       connect(i, building_io);
