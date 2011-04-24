@@ -122,9 +122,9 @@ encapsulated package Thermal
     extends System.EconomicTechnology(FixedCost=-60000);
     extends BuildingTech.ControlledDevice;
 
-    ThermalPower rated_thermal_power = 5000;
+    ThermalPower rated_thermal_power = 7500;
     ElectricPower rated_electric_power = 0;
-    NaturalGasPower rated_natural_gas_power = -5500;
+    NaturalGasPower rated_natural_gas_power = -7750;
   end Heater;
   
   
