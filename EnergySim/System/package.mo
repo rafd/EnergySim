@@ -133,7 +133,7 @@ encapsulated package System
   end CommunityTechnology;
   
   model getData
-    
+        
     import Modelica.Blocks.Sources;
     import Modelica.Blocks.Tables;
     Tables.CombiTable1Ds Climate(tableOnFile = true, tableName = "Climate", fileName = "Climate2010.txt",columns=2:11);
@@ -162,6 +162,38 @@ encapsulated package System
     
   end getData;
   
+  partial model EPrice
+    
+    Real TotalDay "total days simulated";
+    Real HourofDay "Hour of the day";
+    Boolean Summer(start=true) "true If the day is summer time";
+    Boolean OnPeak(start=true);
+    Boolean OffPeak(start=true);
+    Boolean Weekend(start=false)"check if it is holiday or not";
+    Real Price "price of electricity in dollars per kwh";
+    Real PriceInstant "price of electricity in dollars per ws";        
+    
+    equation
+    TotalDay=floor(time/24/60/60);
+    HourofDay=time/60/60-TotalDay*24;
+    Summer = if (Month>4 and Month<11) then true else false;
+    Weekend = if rem(TotalDay+1,7)>5 or rem(TotalDay+1,7)<1 then true else false;
+  
+    if Weekend then
+    OffPeak=true;
+    OnPeak=false;
+    elseif Summer then
+    OnPeak = if (HourofDay>11 and HourofDay<17) then true else false;
+    OffPeak = if(HourofDay>21 or HourofDay<7) then true else false;
+    else
+    OnPeak = if((HourofDay>7 and HourofDay<11) or (HourofDay>17 and HourofDay< 21)) then true else false;
+    OffPeak = if(HourofDay>21 or HourofDay<7) then true else false;
+    end if;
+  
+    Price = if OnPeak then 0.099 elseif OffPeak then 0.051 else 0.081;
+    PriceInstant = Price * 1000/60/60;
+     
+  end EPrice;
   
 
 end System;

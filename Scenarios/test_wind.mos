@@ -5,8 +5,7 @@ loadModel(Modelica.Blocks);
 loadFile("test_wind.mo");
 getErrorString();
 
-simulate(Test, startTime=0, stopTime=365*86400);
-//simulate(Test, startTime=0, stopTime=10.73);
+simulate(Test, startTime=0, stopTime=86400);
 
 getErrorString();
 

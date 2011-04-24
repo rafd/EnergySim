@@ -1,0 +1,14 @@
+runScript("_sim.mos");
+getErrorString();
+
+loadModel(Modelica.Blocks);
+loadFile("test_payback.mo");
+getErrorString();
+
+simulate(Sys, startTime=6*30*86400, stopTime=(6*30+3)*86400,outputFormat="plt");
+
+getErrorString();
+
+plot(Price);
+
+getErrorString();
