@@ -2,8 +2,55 @@ within EnergySim;
 
 encapsulated package System
   "System modeling package"
-  //import Modelica.SIunits.Temperature;
+
   import EnergySim.*;
+  
+  function electricity_price
+    input Real time;
+    output Cost price "$/kwH";
+    
+    Cost off_peak = 0.059 "$/kwH";
+    Cost mid_peak = 0.089 "$/kwH";
+    Cost on_peak = 0.107 "$/kwH";
+    
+    Real hour;
+    Real month;
+  
+    algorithm
+      hour := EnergySim.Time.hour_of_day(time);
+      month := EnergySim.Time.month_of_year(time);
+      
+      if EnergySim.Time.day_of_week(time) > 5  then //weekend
+        price := off_peak;
+      else // weekday
+        if month >= 5 and month <= 10 then //summer
+          if hour < 7 then
+            price := off_peak;
+          elseif hour < 11 then
+            price := mid_peak;
+          elseif hour < 17 then
+            price := on_peak;
+          elseif hour < 19 then
+            price := mid_peak;
+          else
+            price := off_peak;
+          end if;
+        else // winter
+          if hour < 7 then
+            price := off_peak;
+          elseif hour < 11 then
+            price := on_peak;
+          elseif hour < 17 then
+            price := mid_peak;
+          elseif hour < 19 then
+            price := on_peak;
+          else
+            price := off_peak;
+          end if;
+        end if;
+      end if;
+  
+  end electricity_price;
   
   function system_temperature
     input    Real         time;
