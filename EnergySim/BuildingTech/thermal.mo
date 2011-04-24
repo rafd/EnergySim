@@ -51,7 +51,7 @@ encapsulated package Thermal
     Real AirFlow;
     */
     equation
-      Q = -49000;
+      Q = 100 * (outside_temperature - building_temperature);
       P = 0;
       NG = 0;
   end Leaks;
@@ -110,8 +110,8 @@ encapsulated package Thermal
     extends System.EconomicTechnology(FixedCost=60000);
     extends BuildingTech.ControlledDevice;
 
-    ThermalPower rated_thermal_power = -1000;
-    ElectricPower rated_electric_power = -1500;
+    ThermalPower rated_thermal_power = -4000;
+    ElectricPower rated_electric_power = -5000;
     NaturalGasPower rated_natural_gas_power = 0;
   
   end AirConditioner;
@@ -122,9 +122,9 @@ encapsulated package Thermal
     extends System.EconomicTechnology(FixedCost=60000);
     extends BuildingTech.ControlledDevice;
 
-    ThermalPower rated_thermal_power = 1500;
+    ThermalPower rated_thermal_power = 5000;
     ElectricPower rated_electric_power = 0;
-    NaturalGasPower rated_natural_gas_power = -1500;
+    NaturalGasPower rated_natural_gas_power = -5500;
   end Heater;
   
   
