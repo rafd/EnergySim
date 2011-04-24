@@ -113,12 +113,24 @@ encapsulated package System
 
   partial model EconomicTechnology
     parameter Real FixedCost;
+    parameter Real Inflation = 0.032872 "Average Inflation rate per month";
+    Real PayBack(start=0) "portion paid back, if greater than 1 then payback acheived";
+    Real PayBackPeriod "the time used to payback";
     
     Cost RunningCost;
     Cost TotalCost(start=FixedCost,fixed=true);
+    Cost Revenue "revenue from green tech";
+    Cost TotalRevenue(start=0,fixed=true);
     
     equation
+      PayBack=TotalRevenue/TotalCost;
+      
+      when PayBack>1 then
+      PayBackPeriod = time;
+      end when;
+      
       der(TotalCost) = RunningCost;
+      der(TotalRevenue)=Revenue;
   end EconomicTechnology;
 
   
