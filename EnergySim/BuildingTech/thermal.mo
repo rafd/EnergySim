@@ -6,7 +6,7 @@ encapsulated package Thermal
   
   model Walls
     extends System.BuildingTech.BuildingTechnology;
-    extends System.EconomicTechnology(FixedCost=60000);
+    extends System.EconomicTechnology(FixedCost=-60000);
     
     outer Temperature outside_temperature;
     
@@ -23,7 +23,7 @@ encapsulated package Thermal
   
   model Windows
     extends System.BuildingTech.BuildingTechnology;
-    extends System.EconomicTechnology(FixedCost=60000);
+    extends System.EconomicTechnology(FixedCost=-60000);
   
     outer Temperature outside_temperature;
     
@@ -39,7 +39,7 @@ encapsulated package Thermal
   
   model Leaks
     extends System.BuildingTech.BuildingTechnology;
-    extends System.EconomicTechnology(FixedCost=60000);
+    extends System.EconomicTechnology(FixedCost=-60000);
   
     outer Temperature outside_temperature;
     /*
@@ -107,7 +107,7 @@ encapsulated package Thermal
 
   model AirConditioner
     extends System.BuildingTech.BuildingTechnology;
-    extends System.EconomicTechnology(FixedCost=60000);
+    extends System.EconomicTechnology(FixedCost=-60000);
     extends BuildingTech.ControlledDevice;
 
     ThermalPower rated_thermal_power = -4000;
@@ -119,7 +119,7 @@ encapsulated package Thermal
   
   model Heater
     extends System.BuildingTech.BuildingTechnology;
-    extends System.EconomicTechnology(FixedCost=60000);
+    extends System.EconomicTechnology(FixedCost=-60000);
     extends BuildingTech.ControlledDevice;
 
     ThermalPower rated_thermal_power = 5000;

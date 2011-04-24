@@ -6,7 +6,7 @@ encapsulated package Solar
   
   model solar_pv_panel
     extends System.BuildingTech.BuildingTechnology;
-    extends System.EconomicTechnology(FixedCost=60000);
+    extends System.EconomicTechnology(FixedCost=-60000);
     
     Real tilt_angle = 39.0;
     Real azimuth_angle = 0.0;

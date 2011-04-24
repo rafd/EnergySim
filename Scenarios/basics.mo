@@ -1,6 +1,6 @@
 model SpecificCommunityTechnology
   extends EnergySim.System.CommunityTechnology;
-  extends EnergySim.System.EconomicTechnology(FixedCost=1000);
+  extends EnergySim.System.EconomicTechnology(FixedCost=-1000);
 
   equation
     RunningCost = 0.01;
@@ -12,7 +12,7 @@ end SpecificCommunityTechnology;
 
 model SpecificBuildingTechnology
   extends EnergySim.BuildingTech.BuildingTechnology;
-  extends EnergySim.System.EconomicTechnology(FixedCost=60000);
+  extends EnergySim.System.EconomicTechnology(FixedCost=-60000);
 
   equation
     RunningCost = 0.01;
