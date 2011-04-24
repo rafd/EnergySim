@@ -63,12 +63,12 @@ encapsulated package Building
     BuildingTech.Thermal.Walls walls;
     BuildingTech.Thermal.Windows windows;
     BuildingTech.Thermal.Leaks leaks;
-    BuildingTech.Thermal.Heater heater;
+    BuildingTech.Thermal.Furnace furnace;
     BuildingTech.Thermal.AirConditioner ac;
     BuildingTech.Thermal.Thermostat thermostat;
     
     equation
-      connect(heater.control, thermostat.heater_on);
+      connect(furnace.control, thermostat.furnace_on);
       connect(ac.control, thermostat.ac_on);
   
   end ThermalTechBuilding;

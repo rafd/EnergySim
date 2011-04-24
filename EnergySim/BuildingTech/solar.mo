@@ -23,7 +23,7 @@ encapsulated package Solar
   end solar_pv_panel;
   
 /*
- model solar_water_heater
+ model solar_water_furnace
   
 //http://www.infinitepower.org/calc_waterheating.htm
 //http://practicalaction.org/practicalanswers/product_info.php?products_id=166
@@ -41,7 +41,7 @@ encapsulated package Solar
         else result := t_outside;
         end if;
 
-  end solar_water_heater;
+  end solar_water_furnace;
 
   */
 end Solar;

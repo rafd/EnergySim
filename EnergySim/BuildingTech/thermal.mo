@@ -76,7 +76,7 @@ encapsulated package Thermal
 
    
   model Thermostat
-    BuildingTech.SignalPort heater_on;
+    BuildingTech.SignalPort furnace_on;
     BuildingTech.SignalPort ac_on;
     
     outer Temperature building_temperature;
@@ -91,9 +91,9 @@ encapsulated package Thermal
         ac_on.s = building_temperature > summer_target+sensitivity+273;
       end when;
       
-      // Heater
+      // Furnace
       when {building_temperature < winter_target-sensitivity+273, building_temperature > winter_target+sensitivity+273} then
-        heater_on.s = building_temperature < winter_target-sensitivity+273;
+        furnace_on.s = building_temperature < winter_target-sensitivity+273;
       end when;
   
   end Thermostat; 
@@ -117,7 +117,7 @@ encapsulated package Thermal
   end AirConditioner;
   
   
-  model Heater
+  model Furnace
     extends System.BuildingTech.BuildingTechnology;
     extends System.EconomicTechnology(FixedCost=-60000);
     extends BuildingTech.ControlledDevice;
@@ -125,7 +125,7 @@ encapsulated package Thermal
     ThermalPower rated_thermal_power = 7500;
     ElectricPower rated_electric_power = 0;
     NaturalGasPower rated_natural_gas_power = -7750;
-  end Heater;
+  end Furnace;
   
   
 end Thermal;
