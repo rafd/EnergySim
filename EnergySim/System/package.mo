@@ -42,9 +42,11 @@ encapsulated package System
     input Real time;
     output Cost price "$/kwH";
     
-    Cost off_peak = 0.059 "$/kwH";
-    Cost mid_peak = 0.089 "$/kwH";
-    Cost on_peak = 0.107 "$/kwH";
+    Real joules_per_kwh = 3600000;
+    
+    Cost off_peak = 0.059 / joules_per_kwh "$/J";
+    Cost mid_peak = 0.089 / joules_per_kwh "$/J";
+    Cost on_peak = 0.107 / joules_per_kwh "$/J";
     
     Real hour;
     Real month;
