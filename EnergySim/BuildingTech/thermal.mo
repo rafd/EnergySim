@@ -81,9 +81,9 @@ encapsulated package Thermal
     
     outer Temperature building_temperature;
     
-    Temperature summer_target = 23;
-    Temperature winter_target = 21;
-    Temperature sensitivity = 2;
+    Temperature summer_target = 21;
+    Temperature winter_target = 20;
+    Temperature sensitivity = 0.25;
   
     equation
       // AC
