@@ -1,14 +1,7 @@
-partial model DataSource
-  import Modelica.Blocks.Sources;
-  import Modelica.Blocks.Tables;
 
-end DataSource;
 
 model ClimateData
-  import Modelica.Blocks.Sources;
-  import Modelica.Blocks.Tables;
-  
-  Tables.CombiTable1Ds Climate(tableOnFile = true, tableName = "Climate", fileName = "../Data/toronto_climate_2010.txt",columns=2:11);
+  Modelica.Blocks.Tables.CombiTable1Ds Climate(tableOnFile = true, tableName = "Climate", fileName = "../Data/toronto_climate_2010.txt",columns=2:11);
   
   //Real Month  = Climate.y[1] "Month of the year";
   //Real Day    = Climate.y[2] "Day of the month";
@@ -27,10 +20,7 @@ model ClimateData
 end ClimateData;
 
 model DemandData
-  import Modelica.Blocks.Sources;
-  import Modelica.Blocks.Tables;
-  
-  Tables.CombiTable1Ds Demand(tableOnFile = true, tableName = "Demand", fileName = "../Data/ontario_electricity_demand.txt",columns=2:4);
+  Modelica.Blocks.Tables.CombiTable1Ds Demand(tableOnFile = true, tableName = "Demand", fileName = "../Data/ontario_electricity_demand.txt",columns=2:4);
   
   Real TotalDemand    = Demand.y[1] "total demand";
   //Real OntarioDemand  = Demand.y[2] "Ontario Demand";
