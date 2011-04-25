@@ -87,7 +87,7 @@ encapsulated package System
   
   end electricity_price;
   
-  function system_temperature
+  function system_temperature_sim
     input    Real         time;
     output   Temperature  result "Outside Temperature in Kelvin";
     
@@ -107,7 +107,7 @@ encapsulated package System
       x := 0.9 * a * cos(b*(time-c)) + d + 273; //daily extremes
       y := 5 * cos((b*365)*(time-seconds_in_day/2)) - 5; //daily variation of 5 deg
       result := x + y;
-  end system_temperature;
+  end system_temperature_sim;
   
   
   /*
@@ -283,7 +283,7 @@ encapsulated package System
 
     MultiPort ground;
   
-    Temperature temperature;
+    //Temperature temperature;
    
     Cost TotalCost;
     GHGRate GHG;
@@ -293,7 +293,7 @@ encapsulated package System
       //ground.S = 0;
 
     algorithm
-      temperature := EnergySim.System.system_temperature(time);
+      //temperature := EnergySim.System.system_temperature(time);
 
   end System;  
 
