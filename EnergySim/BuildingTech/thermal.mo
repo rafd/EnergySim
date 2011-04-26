@@ -36,24 +36,42 @@ encapsulated package Thermal
       NG = 0;
   end Windows;
   
-  
   model Leaks
-    extends System.BuildingTech.BuildingTechnology;
-    extends System.EconomicTechnology(FixedCost=-60000);
-  
-    outer Temperature outside_temperature;
-    /*
-    Real LeakArea;
-    Real AirDensity;
-    Real PressureDifferenceStack;
-    Real PressureDifferenceWind;
     
-    Real AirFlow;
-    */
+    extends System.BuildingTech.BuildingTechnology;
+    extends System.EconomicTechnology(FixedCost=-60000);  
+    
+    parameter Real Height=2 "height of the building in m";
+    
+    parameter Real AirDensity = 1.3 "kg/m^3";
+    parameter Real ELA=0.34 "equavalent leakage area m^2";
+    parameter Real Shape=0.6 "shape property for leakage area, 0.6 for rough edge";
+    parameter Real HF=1.2 "humidity factor, ususaly 1.2";
+    parameter Real Cair=1005 "heat capacity in J/kg";
+    parameter Real HouseVolume=6*10*Height;
+    
+    
+    outer Temperature outside_temperature;
+    outer Real WindSpeed "in m/s at 10m";
+    outer Real Patm "atm pressure in Pa";
+    
+    Real FlowRate "in m^3/s";
+    Real DeltaP "sum Pressure difference";
+    Real DeltaPStack "pressure difference caused by stack (building height)";
+    Real DeltaPWind "pressure different cuased by wind";
+    Real AirCycle"how many cycles of air has been replaced, in cycles";
+    
+    
     equation
-      Q = 100 * (outside_temperature - building_temperature);
+      DeltaP=DeltaPStack+DeltaPWind;
+      DeltaPStack=0.0342*(Height/2)*Patm*((1/outside_temperature)-(1/building_temperature));
+      DeltaPWind=0.5*AirDensity*(WindSpeed*(Height/2/10)^0.26)^2;
+      FlowRate=Shape*ELA*(2/AirDensity*DeltaP)^0.5;
+      der(AirCycle)=FlowRate/HouseVolume;
+      Q=HF*FlowRate*AirDensity*Cair*(outside_temperature-building_temperature);
       P = 0;
       NG = 0;
+    
   end Leaks;
 
 

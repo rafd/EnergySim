@@ -1,5 +1,3 @@
-
-
 model ClimateData
   Modelica.Blocks.Tables.CombiTable1Ds Climate(tableOnFile = true, tableName = "Climate", fileName = "../Data/toronto_climate_2010.txt",columns=2:11);
   
@@ -9,9 +7,9 @@ model ClimateData
   //Real DT     = Climate.y[4] "Dew Point Temperature in C";
   //Real RH     = Climate.y[5] "relative Humidity in %";
   //Real D      = 10*Climate.y[6] "wind direction in degree";
-  //Real V      = Climate.y[7]"wind speed in km/h";
+  Real V      = Climate.y[7]"wind speed in km/h";
   //Real Vis    = Climate.y[8]"Visibiliy in km";
-  //Real P      = Climate.y[9]"Standard Pressure in kPa";
+  Real P      = Climate.y[9]"Standard Pressure in kPa";
   //Real WC     = Climate.y[10] "WindChill";
   
   equation 
@@ -30,8 +28,6 @@ model DemandData
     Demand.u = time/60/60;
   
 end DemandData;
-
-
 
 
 model SpecificBuilding
@@ -62,11 +58,15 @@ model Test
   DemandData demand_data;
   
   inner EnergySim.Temperature outside_temperature;
+  inner Real WindSpeed;
+  inner Real Patm;
   
   Real system_demand;
   
   equation
     outside_temperature = climate_data.T;
+    WindSpeed=(climate_data.V)/3.6;
+    Patm=(climate_data.P)*1000;
     system_demand = demand_data.TotalDemand; 
   
     connect(sys.i, com.o);
