@@ -278,15 +278,19 @@ encapsulated package System
   end MultiDevice;
   
   
+  partial model SummativeModel
+    Cost TotalCost;
+    GHGRate GHG;
+    
+  end SummativeModel;
+  
   model System
     extends MultiDevice;
+    extends SummativeModel;
 
     MultiPort ground;
   
     //Temperature temperature;
-   
-    Cost TotalCost;
-    GHGRate GHG;
      
     equation
       connect(i, ground);
@@ -300,9 +304,7 @@ encapsulated package System
 
   model Community
     extends MultiDevice;
-    
-    Cost TotalCost;
-    GHGRate GHG;
+    extends SummativeModel;
     
     inner MultiPort community_io;
     
