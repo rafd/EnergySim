@@ -60,7 +60,7 @@ encapsulated package Building
     
     BuildingTech.Thermal.Walls walls;
     BuildingTech.Thermal.Windows windows;
-    BuildingTech.Thermal.Leaks leaks;
+    //BuildingTech.Thermal.Leaks leaks;
     BuildingTech.Thermal.Furnace furnace;
     BuildingTech.Thermal.AirConditioner ac;
     BuildingTech.Thermal.Thermostat thermostat;

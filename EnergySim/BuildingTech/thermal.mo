@@ -59,7 +59,7 @@ encapsulated package Thermal
     Real DeltaP "sum Pressure difference";
     Real DeltaPStack "pressure difference caused by stack (building height)";
     Real DeltaPWind "pressure different cuased by wind";
-    Real AirCycle"how many cycles of air has been replaced, in cycles";
+    //Real AirCycle"how many cycles of air has been replaced, in cycles";
     
     
     equation
@@ -67,7 +67,7 @@ encapsulated package Thermal
       DeltaPStack=0.0342*(Height/2)*Patm*((1/outside_temperature)-(1/building_temperature));
       DeltaPWind=0.5*AirDensity*(WindSpeed*(Height/2/10)^0.26)^2;
       FlowRate=Shape*ELA*(2/AirDensity*DeltaP)^0.5;
-      der(AirCycle)=FlowRate/HouseVolume;
+      //der(AirCycle)=FlowRate/HouseVolume;
       Q=HF*FlowRate*AirDensity*Cair*(outside_temperature-building_temperature);
       P = 0;
       NG = 0;
@@ -135,6 +135,7 @@ encapsulated package Thermal
   end AirConditioner;
   
   
+  
   model Furnace
     extends System.BuildingTech.BuildingTechnology;
     extends System.EconomicTechnology(FixedCost=-60000);
@@ -145,5 +146,6 @@ encapsulated package Thermal
     NaturalGasPower rated_natural_gas_power = -7750;
   end Furnace;
   
+
   
 end Thermal;
