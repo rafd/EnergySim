@@ -10,11 +10,9 @@ encapsulated package Building
     extends System.CommunityTechnology;
     extends ThermalBuilding;
     extends ThermalTechBuilding;
+    extends System.SummativeModel;
 
     inner System.MultiPort building_io;
-
-    Cost TotalCost;
-    GHGRate GHG;
 
     equation
       connect(i, building_io);
