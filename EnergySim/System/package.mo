@@ -118,24 +118,6 @@ encapsulated package System
    * Created by Kun Xie 2010/03/07
    */
 
-
-  function radians
-    input Real inp;
-    output Real out;
-     
-    algorithm
-      out := inp * 2 * Modelica.Constants.pi/360;
-  end radians;
-   
-  function degrees
-    input Real inp;
-    output Real out;
-    
-    algorithm
-      out := inp * 0.5 * 360/Modelica.Constants.pi;
-  end degrees;
-
-
   function system_solar_insolation
      
     input Real time;

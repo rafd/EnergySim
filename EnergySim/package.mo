@@ -14,4 +14,23 @@ encapsulated package EnergySim
   constant Real seconds_in_day = 86400;
   constant Real seconds_in_year = 31536000;
   
+  
+  /* UTILITY FUNCTIONS */
+  
+  function radians
+    input Real inp;
+    output Real out;
+     
+    algorithm
+      out := inp * 2 * Modelica.Constants.pi/360;
+  end radians;
+   
+  function degrees
+    input Real inp;
+    output Real out;
+    
+    algorithm
+      out := inp * 0.5 * 360/Modelica.Constants.pi;
+  end degrees;
+  
 end EnergySim;
