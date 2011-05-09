@@ -27,6 +27,7 @@ Set Up
 ------
 
 Setting the appropriate OpenModelica Path:
+
   * in terminal (or equivalent), run OMShell
   * in OMShell, run: getSettings() and copy down the part after the first : (should end in /common)
     * for example: /opt/local/lib/omlibrary/common
